@@ -1,14 +1,21 @@
 """Code de la classe DQN"""
 import time
 
+import sys
+import os
+
 import torch
 import torch.nn.functional as F
 import numpy as np
 import matplotlib.pyplot as plt
 import copy
 import gymnasium as gm
-from DQN.replay_buffer2 import ReplayBuffer
+from replay_buffer import ReplayBuffer
 from tensorboardX import SummaryWriter
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'utils')))
+
+from optimizer import create_optimizer
 
 DEBUG = False
 
@@ -22,12 +29,6 @@ def debug_log(entry: str):
     """
     if DEBUG:
         print(entry)
-
-def create_optimizer(network, learning_rate, opt_type='adam'):
-    if opt_type == 'adam':
-        return torch.optim.Adam(network.parameters(), lr=learning_rate)
-    elif opt_type == 'rms_prop':
-        return torch.optim.RMSProp(network.parameters(), lr=learning_rate)
 
 
 class AgentDQN:
@@ -478,3 +479,58 @@ class AgentDQN:
             episode += 1
 
             self.running_loss = 0
+
+
+if __name__ == "__main__":
+    env = gm.make("FrozenLake-v1", render_mode="ansi", is_slippery=False)
+
+    network = torch.nn.Sequential(
+        torch.nn.Flatten(start_dim=1),
+        torch.nn.Linear(16, 32),
+        torch.nn.ReLU(),
+        torch.nn.Linear(32, 4)
+    )
+
+    hyperparameters = {
+        'optimizer_type' : 'adam',
+        'mode_training': True,
+        # Environnement Informations
+        "environment": env,
+        "action_space_size": 4,
+        "get_initial_state": get_initial_state,
+        "state_preprocess": state_preprocess,
+
+        "state_shape": (1, 16),
+
+        # Training Parameters
+        "network": network,
+        "learning_rate": 1e-3,
+        "clip_grad_norm": 3,
+        "discount_factor": 0.99,
+        "max_episodes": 5000,
+        "memory_capacity": 10_000,
+        "batch_size": 64,
+
+        # Training Mode Parameters
+        "update_frequency": 1,
+        "update_mode": "soft_update",
+        "exploration_mode": "epsilon-greedy",
+
+        # For Soft and t-soft update modes
+        "tau": 0.1,
+
+        # For t-soft update mode
+        "nu": 1,
+
+        # For Softmax Exploration
+        "tau_softmax": 5,
+
+        # For Epsilon-Greedy Exploration
+        "epsilon": 1,
+        "epsilon_min": 0.05,
+        "epsilon_decay": 0.99
+    }
+
+    dqn = AgentDQN(hyperparameters)
+    dqn.train("Training_Data_1/rewards.txt", "Training_Data_1/checkpoints", 20)
+
