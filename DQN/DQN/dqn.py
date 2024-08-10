@@ -1,4 +1,4 @@
-"""Code de la classe DQN"""
+"""Deep Q-Learning Algorithm Implementation"""
 import time
 
 import sys
@@ -32,17 +32,13 @@ def debug_log(entry: str):
 
 
 class AgentDQN:
-    """Class DQN for Deep Q-Learnin(g"""
+    """Class DQN for Deep Q-Learning Algorithm"""
 
     def __init__(self, hyperparams_dict):
         """Class AgentDQN Constructor
 
         Args:
-            env (_type_): _description_
-            input_size (_type_): _description_
-            number_actions (_type_): _description_
-            buffer_capacity (_type_): _description_
-            steps_per_epoch (_type_): _description_
+            hyperparams_dict (dict): dictionnay of the hyperparameters
         """
         torch.autograd.set_detect_anomaly(True)
         self.env = hyperparams_dict["environment"]
@@ -55,7 +51,7 @@ class AgentDQN:
 
         self.number_actions = hyperparams_dict["action_space_size"]
         self.state_shape = hyperparams_dict["state_shape"]
-        
+
         self.network_policy = hyperparams_dict["network"].to(self.device)
 
         if hyperparams_dict['mode_training']:
@@ -88,11 +84,19 @@ class AgentDQN:
             self.max_episodes = hyperparams_dict["max_episodes"]
 
             self.opt_type = hyperparams_dict['optimizer_type']
-            
-            self.discount_factor = hyperparams_dict["discount_factor"]
-            self.optimizer = create_optimizer(self.network_policy, hyperparams_dict["learning_rate"], self.opt_type)
 
-            self.replay_buffer = ReplayBuffer(hyperparams_dict["memory_capacity"], self.state_shape, "cpu")
+            self.discount_factor = hyperparams_dict["discount_factor"]
+            self.optimizer = create_optimizer(
+                self.network_policy,
+                hyperparams_dict["learning_rate"],
+                self.opt_type
+            )
+
+            self.replay_buffer = ReplayBuffer(
+                hyperparams_dict["memory_capacity"],
+                self.state_shape,
+                "cpu"
+            )
 
         self.running_loss = 0
         self.state_preprocess = hyperparams_dict["state_preprocess"]
@@ -101,12 +105,22 @@ class AgentDQN:
         self.losses = []
 
         self.timestep = 1
-       
+
         self.create_summary(hyperparams_dict)
 
-        print(self)
+        self.working_directory = hyperparams_dict["working_directory"]
+
+        if not os.path.exists(f"{self.working_directory}/checkpoints"):
+            os.makedirs(f"{self.working_directory}/checkpoints")
+            print("Checkpoints directory created")
+
 
     def create_summary(self, hyperparams_dict):
+        """Create a summary of the learning process with TensorBoardX
+
+        Args:
+            hyperparams_dict (dict): dictionnay of the hyperparameters
+        """
         self.writer = SummaryWriter()
         update_mode_mapping = {
             "hard_update": 0,
@@ -133,7 +147,7 @@ class AgentDQN:
         """Converstion to string method
 
         Returns:
-            str: description of the DQN
+            str: description of the Agent
         """
         result = "DQN Agent :\n"
         result += "  Data parameters :\n"
@@ -141,6 +155,7 @@ class AgentDQN:
         result += f"    Size of action space                : {self.number_actions}\n\n"
         result += "  Learning process hyperparameters :\n"
         result += f"    Learning rate                       : {self.optimizer.defaults['lr']}\n"
+        result += f"    Optimizer Type                      : {self.opt_type}\n"
         result += f"    Exploration mode                    : {self.exploration_mode}\n"
         result += f"    Starting epsilon value              : {getattr(self, 'epsilon', None)}\n"
         result += f"    Minimum epsilon                     : {getattr(self, 'epsilon_min', None)}\n"
@@ -159,7 +174,7 @@ class AgentDQN:
 
 
     def epoch(self):
-        """Episode of training
+        """Episode of training. In the case of the Deep Q-Learning Algorithm, an episode is done when the current game in the environnnemnt is done.
 
         Returns:
             float: reward obtained during the full episode
@@ -220,8 +235,7 @@ class AgentDQN:
         return total_reward
 
     def hard_update(self):
-        """Full Synchronisation of the target network
-        """
+        """Full Synchronisation of the target network"""
         #debug_log("Hard update")
         self.network_target.load_state_dict(self.network_policy.state_dict())
         for mod1, mod2 in zip(self.network_policy, self.network_target):
@@ -233,16 +247,16 @@ class AgentDQN:
 
 
     def soft_update(self):
-        """Partial Synchronisation of the target network by weighted average
-        """
+        """Partial Synchronisation of the target network by weighted average"""
         debug_log("Soft update")
-        for param_target, param_policy in zip(self.network_target.parameters(), self.network_policy.parameters()):
+        for param_target, param_policy in zip(
+            self.network_target.parameters(),
+            self.network_policy.parameters()):
             param_target.data.copy_(self.tau * param_policy.data + (1 - self.tau) * param_target.data)
 
 
     def t_soft_update(self):
-        """Partial Synchronisation of the target network with the t-soft update algorithm
-        """
+        """Partial Synchronisation of the target network with the t-soft update algorithm"""
         debug_log("t-soft update")
         policy_params = torch.cat([param.view(-1) for param in self.network_policy.parameters()])
         target_params = torch.cat([param.view(-1) for param in self.network_target.parameters()])
@@ -261,8 +275,7 @@ class AgentDQN:
 
 
     def choose_action_training(self, state: torch.tensor, policy: torch.nn.Sequential) -> int:
-        """Choose the action to play taking into account both the probability epsilon
-        of choosing randomly and the current state of the game.
+        """Choose the action according to the exploration methode of the agent
 
         Args:
             state (torch.tensor): state of the game
@@ -300,7 +313,7 @@ class AgentDQN:
 
 
     def step_training(self, state: torch.tensor, policy: torch.nn.Sequential = None) -> tuple:
-        """Advance the game during training, meaning it takes into account the probability of choosing randomly.
+        """Advance the game using the exploration method for choosing the action.
 
         Args:
             state (torch.tensor): state of the game
@@ -338,8 +351,7 @@ class AgentDQN:
         return action_result[0], action_result[1], action_result[2]
 
     def epsilon_update(self):
-        """Update the value of epsilon if it is still above the set minimum.
-        """
+        """Update the value of epsilon if it is still above the set minimum."""
         self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
         debug_log(f"Updating Espilon : {self.epsilon}")
 
@@ -376,7 +388,7 @@ class AgentDQN:
 
         self.optimizer.zero_grad()
         loss.backward()
-        torch.nn.utils.clip_grad_norm_(self.network_policy.parameters(), 3)
+        #torch.nn.utils.clip_grad_norm_(self.network_policy.parameters(), 3)
         self.optimizer.step()
 
         return loss
@@ -406,7 +418,7 @@ class AgentDQN:
             state = next_state
             count_step += 1
 
-    def train(self, rewards_file: str, checkpoint_directory: str, checkpoint_step: int, visualize: bool = True):
+    def train(self, checkpoint_step: int, visualize: bool = True):
         """Train the network
 
         Args:
@@ -434,6 +446,9 @@ class AgentDQN:
                 moving_average_reward = np.mean(rewards)
 
             self.writer.add_scalar('Moving_Average_Reward', moving_average_reward, episode)
+
+            rewards_file = f"{self.working_directory}/rewards.txt"
+            checkpoint_directory = f"{self.working_directory}/checkpoints"
 
             with open(rewards_file, mode="a", encoding="utf-8") as file:
                 file.write(f"Epoch {episode} : Reward : {reward:.8f} / Loss : {self.running_loss:.8f} ;\n")
@@ -481,56 +496,6 @@ class AgentDQN:
             self.running_loss = 0
 
 
-if __name__ == "__main__":
-    env = gm.make("FrozenLake-v1", render_mode="ansi", is_slippery=False)
 
-    network = torch.nn.Sequential(
-        torch.nn.Flatten(start_dim=1),
-        torch.nn.Linear(16, 32),
-        torch.nn.ReLU(),
-        torch.nn.Linear(32, 4)
-    )
 
-    hyperparameters = {
-        'optimizer_type' : 'adam',
-        'mode_training': True,
-        # Environnement Informations
-        "environment": env,
-        "action_space_size": 4,
-        "get_initial_state": get_initial_state,
-        "state_preprocess": state_preprocess,
-
-        "state_shape": (1, 16),
-
-        # Training Parameters
-        "network": network,
-        "learning_rate": 1e-3,
-        "clip_grad_norm": 3,
-        "discount_factor": 0.99,
-        "max_episodes": 5000,
-        "memory_capacity": 10_000,
-        "batch_size": 64,
-
-        # Training Mode Parameters
-        "update_frequency": 1,
-        "update_mode": "soft_update",
-        "exploration_mode": "epsilon-greedy",
-
-        # For Soft and t-soft update modes
-        "tau": 0.1,
-
-        # For t-soft update mode
-        "nu": 1,
-
-        # For Softmax Exploration
-        "tau_softmax": 5,
-
-        # For Epsilon-Greedy Exploration
-        "epsilon": 1,
-        "epsilon_min": 0.05,
-        "epsilon_decay": 0.99
-    }
-
-    dqn = AgentDQN(hyperparameters)
-    dqn.train("Training_Data_1/rewards.txt", "Training_Data_1/checkpoints", 20)
-
+   

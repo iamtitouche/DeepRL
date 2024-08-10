@@ -4,6 +4,7 @@ import torch
 import hydra
 from omegaconf import DictConfig
 import gymnasium as gym
+from wrapper import FrozenLake
 from FrozenLake_Processing import state_preprocess, get_initial_state
 import argparse
 from hydra import initialize, compose
@@ -19,11 +20,12 @@ def parse_args():
 def main(cfg: DictConfig, config_path: str):
     print("ok")
     print(config_path)  # Utilisez config_path pour accéder au chemin
-    env = gym.make(
+    env = FrozenLake(
         cfg.environment.name,
         render_mode=cfg.environment.render_mode,
         is_slippery=cfg.environment.is_slippery,
-        map_name=cfg.environment.map_name
+        map_name=cfg.environment.map_name,
+        reward_mode=cfg.environment.reward_mode
     )
 
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), config_path)))
