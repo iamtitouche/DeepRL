@@ -18,10 +18,9 @@ def parse_args():
     return parser.parse_args()
 
 def main(cfg: DictConfig, config_path: str):
-    print("ok")
-    print(config_path)  # Utilisez config_path pour accéder au chemin
+    
+    print(cfg.environment.render_mode) # Utilisez config_path pour accéder au chemin
     env = FrozenLake(
-        cfg.environment.name,
         render_mode=cfg.environment.render_mode,
         is_slippery=cfg.environment.is_slippery,
         map_name=cfg.environment.map_name,
@@ -55,7 +54,9 @@ def main(cfg: DictConfig, config_path: str):
         'epsilon': cfg.hyperparameters.epsilon,
         'epsilon_min': cfg.hyperparameters.epsilon_min,
         'epsilon_decay': cfg.hyperparameters.epsilon_decay,
-        'working_directory': config_path
+        'working_directory': config_path,
+        'grad_clipping_method': cfg.hyperparameters.grad_clipping_method,
+        'grad_clipping_threshold': cfg.hyperparameters.grad_clipping_threshold
     }
 
     dqn = AgentDQN(hyperparameters)

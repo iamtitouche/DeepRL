@@ -17,10 +17,10 @@ hyperparameters:
   optimizer_type: "adam"
   mode_training: true
   state_shape: [1, 16]
-  learning_rate: 0.001
+  learning_rate: 0.0003
   clip_grad_norm: 3
   discount_factor: 0.99
-  max_episodes: 1000
+  max_episodes: 2000
   memory_capacity: 10000
   batch_size: 64
   update_frequency: 1
@@ -32,3 +32,5 @@ hyperparameters:
   epsilon: 1
   epsilon_min: 0.01
   epsilon_decay: 0.99
+  grad_clipping_method: null
+  grad_clipping_threshold: 0

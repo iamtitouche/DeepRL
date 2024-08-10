@@ -92,6 +92,10 @@ class AgentDQN:
                 self.opt_type
             )
 
+            self.grad_clipping_method = hyperparams_dict["grad_clipping_method"]
+            if self.grad_clipping_method is not None:
+                self.grad_clipping_threshold = hyperparameters["grad_clipping_threshold"]
+
             self.replay_buffer = ReplayBuffer(
                 hyperparams_dict["memory_capacity"],
                 self.state_shape,
@@ -163,6 +167,8 @@ class AgentDQN:
         result += f"    Discount factor (\u03B3)            : {self.discount_factor}\n"
         result += f"    Soft update parameter (\u03C4)      : {getattr(self, 'tau', None)}\n"
         result += f"    T-Soft update parameter (\u03BD)    : {getattr(self, 'nu', None)}\n"
+        result += f"    Gradient clipping method            : {self.grad_clipping_method}\n"
+        result += f"    Gradient clipping threshold         : {getattr(self, 'grad_clipping_threshold', None)}\n"
         result += f"    Batch size                          : {self.batch_size}\n"
         result += f"    Network synchronistation rate       : {self.network_sync_rate}\n"
         result += f"    Network Update mode                 : {self.update_mode}\n"
@@ -388,7 +394,11 @@ class AgentDQN:
 
         self.optimizer.zero_grad()
         loss.backward()
-        #torch.nn.utils.clip_grad_norm_(self.network_policy.parameters(), 3)
+        if self.grad_clipping_method == "norm":
+            torch.nn.utils.clip_grad_norm_(self.network_policy.parameters(), self.grad_clipping_threshold)
+        elif self.grad_clipping_method == "component":
+            torch.nn.utils.clip_grad_value_(self.network_policy.parameters(), self.grad_clipping_threshold)
+        
         self.optimizer.step()
 
         return loss
