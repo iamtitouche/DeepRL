@@ -55,4 +55,11 @@ Here are the results of the training on the 4x4 map using the modified rewards. 
 |:---------------------:|:-------------------:|
 | ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_5/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_6/rewards.png) |
 
-We can see that for the non-slippery environnement, the modified reward does not give better training.
+We can see that for both the non-slippery and slippery environnements, the modified reward does not give a better training.
+
+
+Here are the results of the training on the 8 by 8 map using the original rewards.
+
+| 4x4 - Slippery: False | 4x4 - Slippery: True |
+|:---------------------:|:-------------------:|
+| ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_3/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_4/rewards.png) |
