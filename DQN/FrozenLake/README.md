@@ -2,7 +2,7 @@
 
 ### What is Frozen Lake ?
 
-![FrozenLake](https://github.com/iamtitouche/DeepRL/blob/main/DQN/FrozenLake/forzen_lake.gif)
+![FrozenLake](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/README.md)
 
 FrozenLake is a game where the player must cross a frozen lake and reach the gift without fallling in one of the holes.
 
