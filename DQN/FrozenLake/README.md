@@ -2,7 +2,7 @@
 
 ### What is Frozen Lake ?
 
-![FrozenLake](https://github.com/iamtitouche/DeepRL/blob/main/DQN/FrozenLake/forzen_lake.gif)
+![FrozenLake](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/frozen_lake.gif)
 
 FrozenLake is a game where the player must cross a frozen lake and reach the gift without fallling in one of the holes.
 
@@ -39,3 +39,12 @@ If set to "penalty_for_death", the agent will receive the following reward :
 - $1$ : if it reaches the goal
 - $-1$ : if it falls in a hole
 - $0$ : in every other situation
+
+
+### Results
+
+Here are the results of the training on the 4 by 4 map using the original rewards.
+
+![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_1/rewards.png)
+
+![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_2/rewards.png)
