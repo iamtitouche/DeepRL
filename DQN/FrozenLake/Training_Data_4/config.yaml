@@ -6,6 +6,7 @@ environment:
   render_mode: "ansi"
   is_slippery: true
   map_name: "8x8"
+  reward_mode: "original"
 
 network:
   input_dim: 64  # Adapté à FrozenLake 8x8
