@@ -45,13 +45,6 @@ If set to "penalty_for_death", the agent will receive the following reward :
 
 Here are the results of the training on the 4 by 4 map using the original rewards.
 
-<div style="display: flex; justify-content: space-around;">
-  <div style="text-align: center;">
-    <img src="https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_1/rewards.png" alt="4x4-false-original" style="width: 45%;">
-    <p>4x4 - Slippery: False</p>
-  </div>
-  <div style="text-align: center;">
-    <img src="https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_2/rewards.png" alt="4x4-true-original" style="width: 45%;">
-    <p>4x4 - Slippery: True</p>
-  </div>
-</div>
+| 4x4 - Slippery: False | 4x4 - Slippery: True |
+|:---------------------:|:-------------------:|
+| ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_1/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_2/rewards.png) |
