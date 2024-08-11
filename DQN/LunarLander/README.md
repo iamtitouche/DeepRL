@@ -2,6 +2,8 @@
 
 ### What is Lunar Lander ?
 
+![LunarLander](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/LunarLander/lunar_lander.gif)
+
 LunarLander is a classic rocket trajectory optimization problem.
 
 #### Action Space
@@ -9,11 +11,8 @@ LunarLander is a classic rocket trajectory optimization problem.
 There are four discrete actions available:
 
 - $0$ : do nothing
-
 - $1$ : fire left orientation engine
-
 - $2$ : fire main engine
-
 - $3$ : fire right orientation engine
 
 #### Rewards
