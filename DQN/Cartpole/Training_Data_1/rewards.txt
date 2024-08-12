@@ -1,0 +1,4 @@
+Epoch 1 : Reward : 15.00000000 / Loss : 0.00000000 ;
+Epoch 2 : Reward : 12.00000000 / Loss : 0.00000000 ;
+Epoch 3 : Reward : 12.00000000 / Loss : 0.00000000 ;
+Epoch 4 : Reward : 28.00000000 / Loss : 4.26275396 ;

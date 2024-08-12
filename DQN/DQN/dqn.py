@@ -94,7 +94,7 @@ class AgentDQN:
 
             self.grad_clipping_method = hyperparams_dict["grad_clipping_method"]
             if self.grad_clipping_method is not None:
-                self.grad_clipping_threshold = hyperparameters["grad_clipping_threshold"]
+                self.grad_clipping_threshold = hyperparams_dict["grad_clipping_threshold"]
 
             self.replay_buffer = ReplayBuffer(
                 hyperparams_dict["memory_capacity"],
@@ -110,7 +110,7 @@ class AgentDQN:
 
         self.timestep = 1
 
-        self.create_summary(hyperparams_dict)
+        #self.create_summary(hyperparams_dict)
 
         self.working_directory = hyperparams_dict["working_directory"]
 
@@ -222,7 +222,7 @@ class AgentDQN:
                 else:
                     moving_average_loss = np.mean(self.losses)
 
-                self.writer.add_scalar('Moving_Average_Loss', moving_average_loss, self.timestep)
+                #self.writer.add_scalar('Moving_Average_Loss', moving_average_loss, self.timestep)
 
                 if i % self.network_sync_rate == 0:
                     if self.update_mode == "hard_update":
@@ -455,7 +455,7 @@ class AgentDQN:
             else:
                 moving_average_reward = np.mean(rewards)
 
-            self.writer.add_scalar('Moving_Average_Reward', moving_average_reward, episode)
+            #self.writer.add_scalar('Moving_Average_Reward', moving_average_reward, episode)
 
             rewards_file = f"{self.working_directory}/rewards.txt"
             checkpoint_directory = f"{self.working_directory}/checkpoints"
