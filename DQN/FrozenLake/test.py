@@ -4,8 +4,8 @@ import torch
 import hydra
 from omegaconf import DictConfig
 import gymnasium as gym
-import gymnasium as gym
-from LunarLander_Processing import state_preprocess, get_initial_state
+from wrapper import FrozenLake
+from FrozenLake_Processing import state_preprocess, get_initial_state
 import argparse
 from hydra import initialize, compose
 
@@ -27,7 +27,12 @@ def parse_args():
 
 def main(cfg: DictConfig, config_path: str):
      # Utilisez config_path pour accéder au chemin
-    env = gym.make("LunarLander-v2", render_mode="human")
+    env = FrozenLake(
+        render_mode=cfg.environment.render_mode,
+        is_slippery=cfg.environment.is_slippery,
+        map_name=cfg.environment.map_name,
+        reward_mode=cfg.environment.reward_mode
+    )
 
 
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), config_path)))
@@ -43,7 +48,6 @@ def main(cfg: DictConfig, config_path: str):
         'state_shape': tuple(cfg.hyperparameters.state_shape),
         'network': network,
         'learning_rate': cfg.hyperparameters.learning_rate,
-        'clip_grad_norm': cfg.hyperparameters.clip_grad_norm,
         'discount_factor': cfg.hyperparameters.discount_factor,
         'max_episodes': cfg.hyperparameters.max_episodes,
         'memory_capacity': cfg.hyperparameters.memory_capacity,
@@ -63,7 +67,7 @@ def main(cfg: DictConfig, config_path: str):
     }
 
     dqn = AgentDQN(hyperparameters)
-    dqn.load_model("Training_Data_1/checkpoints/cp_2500.pth")
+    dqn.load_model("Training_Data_1/checkpoints/cp_1000.pth")
     test(dqn)
 
 if __name__ == "__main__":
