@@ -5,7 +5,7 @@ class FrozenLake:
 
     def __init__(self, render_mode="human", is_slippery=False, map_name='4x4', reward_mode='original'):
         self.env = gym.make("FrozenLake-v1", render_mode=render_mode, is_slippery=is_slippery, map_name=map_name)
-        self.reward_mode = render_mode
+        self.reward_mode = reward_mode
 
     def reset(self):
         return self.env.reset()

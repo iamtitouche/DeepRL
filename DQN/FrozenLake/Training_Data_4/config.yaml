@@ -33,3 +33,5 @@ hyperparameters:
   epsilon_min: 0.01
   epsilon_decay: 0.999
   working_directory: "Training_Data_3"
+  grad_clipping_method: null
+  grad_clipping_threshold: 0

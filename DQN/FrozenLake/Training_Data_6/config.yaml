@@ -31,6 +31,6 @@ hyperparameters:
   tau_softmax: 5
   epsilon: 1
   epsilon_min: 0.01
-  epsilon_decay: 0.99
+  epsilon_decay: 0.999
   grad_clipping_method: null
   grad_clipping_threshold: 0
