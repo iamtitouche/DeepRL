@@ -410,7 +410,7 @@ class AgentDQN:
 
     def load_model(self, file_path: str):
         """Charge les poids et biais du modèle depuis un fichier."""
-        self.network_policy.load_state_dict(torch.load(file_path))
+        self.network_policy.load_state_dict(torch.load(file_path, map_location=torch.device("cpu")))
         try:
             self.network_target.load_state_dict(torch.load(file_path))
         except Exception:
