@@ -110,7 +110,7 @@ class AgentDQN:
 
         self.timestep = 1
 
-        self.create_summary(hyperparams_dict)
+        #self.create_summary(hyperparams_dict)
 
         self.working_directory = hyperparams_dict["working_directory"]
 
@@ -222,7 +222,7 @@ class AgentDQN:
                 else:
                     moving_average_loss = np.mean(self.losses)
 
-                self.writer.add_scalar('Moving_Average_Loss', moving_average_loss, self.timestep)
+                #self.writer.add_scalar('Moving_Average_Loss', moving_average_loss, self.timestep)
 
                 if i % self.network_sync_rate == 0:
                     if self.update_mode == "hard_update":
@@ -361,6 +361,12 @@ class AgentDQN:
         self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
         debug_log(f"Updating Espilon : {self.epsilon}")
 
+    def compute_target(self, rewards, dones, next_states):
+        next_q_values = self.network_target(next_states).max(dim=1, keepdim=True)[0]
+
+        return rewards + self.discount_factor * next_q_values * (1 - dones)
+
+
     def replay_experience(self):
         """Replay and learn from the experience stored in the replay buffer."""
         debug_log("Starting Experience Replay...")
@@ -379,12 +385,7 @@ class AgentDQN:
         debug_log(f"Q-Values for taken actions : {q_values}")
 
         with torch.no_grad():
-            debug_log(f"Next states : {next_states}")
-            debug_log(f"Target Q-Values from next states : {self.network_target(next_states)}")
-            next_q_values = self.network_target(next_states).max(dim=1, keepdim=True)[0]
-
-            debug_log(f"Best Target Q-Values from next states : {next_q_values}")
-            expected_q_value = rewards + self.discount_factor * next_q_values * (1 - dones)
+            expected_q_value = self.compute_target(rewards, dones, next_states)
 
         assert expected_q_value.shape == (self.batch_size, 1)
         assert not expected_q_value.requires_grad
@@ -411,7 +412,10 @@ class AgentDQN:
     def load_model(self, file_path: str):
         """Charge les poids et biais du modèle depuis un fichier."""
         self.network_policy.load_state_dict(torch.load(file_path))
-        self.network_target.load_state_dict(torch.load(file_path))
+        try:
+            self.network_target.load_state_dict(torch.load(file_path))
+        except Exception:
+            pass
         print(f"Model loaded from {file_path}")
 
     def test(self):
@@ -455,7 +459,7 @@ class AgentDQN:
             else:
                 moving_average_reward = np.mean(rewards)
 
-            self.writer.add_scalar('Moving_Average_Reward', moving_average_reward, episode)
+            #self.writer.add_scalar('Moving_Average_Reward', moving_average_reward, episode)
 
             rewards_file = f"{self.working_directory}/rewards.txt"
             checkpoint_directory = f"{self.working_directory}/checkpoints"
