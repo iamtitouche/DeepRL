@@ -94,7 +94,7 @@ class AgentDQN:
 
             self.grad_clipping_method = hyperparams_dict["grad_clipping_method"]
             if self.grad_clipping_method is not None:
-                self.grad_clipping_threshold = hyperparameters["grad_clipping_threshold"]
+                self.grad_clipping_threshold = hyperparams_dict["grad_clipping_threshold"]
 
             self.replay_buffer = ReplayBuffer(
                 hyperparams_dict["memory_capacity"],

@@ -60,6 +60,6 @@ We can see that for both the non-slippery and slippery environnements, the modif
 
 Here are the results of the training on the 8 by 8 map using the original rewards.
 
-| 4x4 - Slippery: False | 4x4 - Slippery: True |
+| 8x8 - Slippery: False | 8x8 - Slippery: True |
 |:---------------------:|:-------------------:|
 | ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_3/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_4/rewards.png) |
