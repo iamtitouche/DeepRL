@@ -32,4 +32,6 @@ For each step, the reward:
 
 ### Results
 
-![FrozenLake](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/LunarLander/Training_Data_1/rewards.png)
+![Rewards](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/LunarLander/Training_Data_1/rewards.png)
+
+![LunarLander](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/LunarLander/Training_Data_1/lunarlander.gif)
