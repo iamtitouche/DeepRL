@@ -21,5 +21,22 @@ At each state, the environment will return an observation noted $x_t$. Depending
 
 It can be noted that by only receiving the last observation as input, crucial information will be missing for our agent. For instance, in Super Mario Bros, if the agent is provided with only the current frame, it cannot deduce Mario's speed and direction. Similarly, in LunarLander, while the agent has access to speed as part of the observation, it lacks information about acceleration, which is crucial for counteracting gravity. To address this issue, we provide the agent with a sequence of observations rather than just a single observation. It should be noted that in environments like FrozenLake, where previous states of the game do not influence the future, it is unnecessary to provide a sequence as input.
 
-Thus, the sequence leading to the observation $x_t$ will be denoted as $s_t$ and called "state". We will then have $s_t = \left(\phi_{t-k}, \dots, \phi_{t-1}, \phi_t\right)$ where $\phi_t = \phi(x_t)$ with $\phi$ being the data preprocessing function. For example, in an environment like Super Mario Bros, it is common practice to reduce the input image resolution and convert it to grayscale as is it allows improve the speed of the learning process by reducing the size of the entries.
+Thus, the sequence leading to the observation $x_t$ will be denoted as $s_t$ and called "state". We will then have $s_t = \left(\phi_{t-k}, \dots, \phi_{t-1}, \phi_t\right)$ where $\phi_t = \phi(x_t)$ with $\phi$ being the data preprocessing function. For example, in an environment like Super Mario Bros, it is common practice to reduce the input image resolution and convert it to grayscale as is it to allows improve the speed of the learning process by reducing the size of the entries.
+
+### Policy
+
+The policy refers to a strategy or a mapping from states of the environment to actions to be taken when in those states. More formally, a policy, denoted by $\pi$, is a function associating an action to a state.
+
+In the Deep Q-Network (DQN) algorithm, the policy is implicitly defined through a Q-function wich gives its name the algorithm. This Q-function evaluates the expected cumulative reward of taking action $a$ in state $s$ and following the optimal policy thereafter. Instead of directly mapping states to actions, DQN uses this Q-function to decide which action to take.
+
+$$Q(s_t) = \left(Q(s_t, a)\right)_{a \in \mathcal{A}} = \left(\mathbb{E}\left[\sum_{k=t}^{\infty} \gamma^k r_k|s_t, a_t = a\right]\right)_{a \in \mathcal{A}}$$ 
+
+Here $\gamma$ is the discount factor and $r_k$ is the reward returned by the environnement after choosing the action $a_k$.
+
+For a given state $s$, the Q-function returns a vector of values, where each component of the vector corresponds to a specific action $a$ from the set of possible actions $\mathcal{A}$. The action chosen by the policy is typically the one with the highest Q-value :
+
+$$\pi(s) = Argmax_{a \in \mathcal{A}}\left(Q(s, a)\right)$$
+
+The challenge now is that we need to define this Q-function. This function is too complex to be calculated exactly, so we use a deep neural network to approximate it. This is where the learning process comes into play.
+
 
