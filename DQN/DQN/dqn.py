@@ -333,7 +333,6 @@ class AgentDQN:
             policy = self.network_policy
 
         action = self.choose_action_training(state, policy)
-
         action_result = self.env.step(action)
 
         return action_result[0], action_result[1], action_result[2], action_result[3], action
