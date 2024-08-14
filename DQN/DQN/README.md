@@ -30,7 +30,7 @@ The policy refers to a strategy or a mapping from states of the environment to a
 In the Deep Q-Network (DQN) algorithm, the policy is implicitly defined through a Q-function wich gives its name the algorithm. This Q-function evaluates the expected cumulative reward of taking action $a$ in state $s$ and following the optimal policy thereafter. Instead of directly mapping states to actions, DQN uses this Q-function to decide which action to take.
 
 $$
-Q(s_t) = \left(Q(s_t, a)\right)_{a \in \mathcal{A}} = \left(\mathbb{E}\left[\sum_{k=t}^{\infty} \gamma^k r_k \mid s_t, a_t = a\right]\right)_{a \in \mathcal{A}}
+Q(s_t) = \left(Q(s_t, a)\right)_{a \in \mathcal{A}} = \left(\mathbb{E}\left[\sum_{k=0}^{\infty} \gamma^k r_{k+t} \mid s_t, a_t = a\right]\right)_{a \in \mathcal{A}}
 $$
 
 Here $\gamma$ is the discount factor and $r_k$ is the reward returned by the environnement after choosing the action $a_k$.
@@ -59,9 +59,80 @@ A replay buffer is a finite-sized memory that stores tuples of the form $(s_{t},
 - $d_t$ is a boolean value indicating if the gmae is over (True) or not (False) 
 - $s_{t+1}$​ is the resulting state after taking action $a_t$​
 
-These tuples, often referred to as "experiences" or "transitions", are stored in the buffer during the agent's interaction with the environment. When the buffer reaches its capacity, the oldest experiences are discarded to make room for new ones.
+These tuples, often referred to as "experiences" or "transitions", are stored in the buffer during the agent's interaction with the environment. When the buffer reaches its capacity $c$, the oldest experiences are discarded to make room for new ones.
 
 Note : in my implementation of the DQN algorithm I chose to remember $1 - d_t$ instead of $d_t$
 
+##### Why Use a Replay Buffer?
 
+The replay buffer serves multiple purposes that are essential for the success of the Deep Q-Network:
+
+- Breaking Correlations:
+When an agent learns from consecutive experiences, the data points are highly correlated. Learning directly from such correlated data can lead to poor generalization and slow learning. The replay buffer addresses this by allowing the agent to learn from a batch of random past experiences, thereby breaking the correlations and improving the robustness of the learning process.
+
+
+- Efficient Use of Data:
+The replay buffer allows the agent to reuse experiences multiple times, which leads to more efficient use of the data and faster convergence especially  when gathering new experiences is costly.
+
+- Stabilizing Training:
+Training neural networks with non-stationary data (data distribution that changes over time) can be challenging and may result in unstable learning. The replay buffer helps to stabilize training by providing a more stationary distribution of experiences to the neural network. Since experiences are sampled randomly from the buffer, the distribution of training data becomes more consistent over time.
+
+## The Learning Algorithm
+
+The pseudo-code below broadly outlines the functioning of the learning process of the DQN algorithm.
+
+```
+Begin
+    Initialise Q-Network and buffer
+
+    For episode 1 to max_episode
+        state = environment.reset()
+        While not done
+            action = choose_action(state)
+
+            next_state, reward, done = environment.step(action)
+
+            buffer.store(state, action, reward, done, next_state)
+
+            If buffer.size >= batch_size
+                batch = buffer.sample(batch_size)
+                replay_experience(batch)
+            End If
+        End While
+    End For
+End
+```
+
+#### The Experience Replay
+
+After sampling a random batch $\mathcal{B}$ of $n$ experiences the algorithm learns from this selected batch through a process called the experience replay.
+
+Through this process the algorithm will evaluate, for each experience $(s, a, , r, d, s')$ how far is $Q(s, a)$ from an expected value called the target $T(s, a, r, d, s')$. We calculate a loss for the full batch by using a loss function such as the MSE (Mean Squared Error) :
+
+$$
+L(\mathcal{B}) = \dfrac{1}{n}\sum_{(s, a, r, d, s') \in \mathcal{B}} \left(Q(s, a)  - T(s, a, r, d, s')\right)^2
+$$
+
+Note : Other loss functions such as Huber Loss or others can also be used, but the MSE is the most commonly used one and the choice of the loss function does not really impact the learning process
+
+After Calculating this loss we use the gradient descent algorithm to optimize the parameters of the Q-Network.
+
+#### The Target 
+
+To find the formula of the target, we have to think about what we want the Q-function to represent. We want $Q(s, a)$ to be the expected cumulative discounted reward of taking action $a$ in state $s$ and following the optimal policy thereafter.
+
+$$Q(s, a) = \mathbb{E}\left[\sum_{k=0}^{\infty} \gamma^k r_{k+t} \mid s, a\right]$$
+
+$$Q(s, a) = \mathbb{E}\left[r_t + \gamma max_{a' \in \mathcal{A}}(Q(s', a')) \mid s, a\right]$$
+
+Ainsi pour faire converger les paramètres de Q vers le paramétrage idéal, on prendra :
+
+$$T(s, a, r, d, s') = r + \gamma max_{a' \in \mathcal{A}}(Q(s', a'))$$
+
+
+In practice, a target network is often used to stabilize the training process. This target network is initialized with the same parameters as the Q-network but is updated less frequently. By holding the target network's parameters constant for several training steps before updating them, this technique reduces oscillations and divergence during training. As a result, it provides a significant improvement in the learning process, making it more stable and allowing the algorithm to converge more effectively. We end up with the following loss function :
+
+$$
+L(\mathcal{B}) = \dfrac{1}{n}\sum_{(s, a, r, d, s') \in \mathcal{B}} \left(Q(s, a)  - r - \gamma max_{a' \in \mathcal{A}}(Q_{target}(s', a'))\right)^2
+$$
 
