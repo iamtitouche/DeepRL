@@ -45,6 +45,23 @@ The main challenge in DQN is that the Q-function is typically too complex to com
 
 The learning process in DQN involves adjusting the parameters so that the Q-network accurately approximates the true Q-function. This allows the agent to make decisions that maximize its expected cumulative reward.
 
+#### Replay Buffer
+
+In Deep Q-Learning, one of the key innovations that significantly enhances the learning process is the Replay Buffer. The replay buffer is a crucial component that stores past experiences of the agent, which are then reused during training. This helps to improve the stability and efficiency of the learning process.
+
+##### What is a Replay Buffer?
+
+A replay buffer is a finite-sized memory that stores tuples of the form $(s_{t},a_t,r_t, d_t, s_{t+1})$, where:
+
+- $s_t​$ is the state observed at time step $t$
+- $a_t$ is the action taken by the agent at time step $t$
+- $r_t$​ is the reward received after taking action $a_t​$
+- $d_t$ is a boolean value indicating if the gmae is over (True) or not (False) 
+- $s_{t+1}$​ is the resulting state after taking action $a_t$​
+
+These tuples, often referred to as "experiences" or "transitions", are stored in the buffer during the agent's interaction with the environment. When the buffer reaches its capacity, the oldest experiences are discarded to make room for new ones.
+
+Note : in my implementation of the DQN algorithm I chose to remember $1 - d_t$ instead of $d_t$
 
 
 
