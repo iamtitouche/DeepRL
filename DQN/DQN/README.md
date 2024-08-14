@@ -39,6 +39,12 @@ For a given state $s$, the Q-function returns a vector of values, where each com
 
 $$\pi(s) = Argmax_{a \in \mathcal{A}}\left(Q(s, a)\right)$$
 
-The challenge now is that we need to define this Q-function. This function is too complex to be calculated exactly, so we use a deep neural network to approximate it. This is where the learning process comes into play.
+#### Q-Network
+
+The main challenge in DQN is that the Q-function is typically too complex to compute exactly. To overcome this, we use a deep neural network to approximate the Q-function. The parameters of this neural network are denoted by $\theta$. Consequently, we refer to the policy and the Q-function that rely on these parameters as $\pi_{\theta}$ and $Q_{\theta}$​, respectively.
+
+The learning process in DQN involves adjusting the parameters so that the Q-network accurately approximates the true Q-function. This allows the agent to make decisions that maximize its expected cumulative reward.
+
+
 
 
