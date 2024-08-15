@@ -184,6 +184,7 @@ The lower $\lambda$, the higher the entropy of the probability distribution of t
 
 ![Network Output](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/q_network_output.png)
 
+| Softmax with $\lambda = 0.1$ | Softmax with $\lambda = 1$ | Softmax with $\lambda = 10$ |
 |:------------------:|:------------------:|:-------------------------:|
 | ![Proba 1](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_1.png) | ![Proba 2](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_2.png) | ![Proba 3](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_3.png) |
 
