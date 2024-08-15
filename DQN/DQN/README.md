@@ -1,4 +1,4 @@
-# The Deep Q-Learning Algorithm
+# The Deep Q-Network Algorithm
 
 ## Introduction to Notations
 
@@ -27,13 +27,15 @@ Thus, the sequence leading to the observation $x_t$ will be denoted as $s_t$ and
 
 The policy refers to a strategy or a mapping from states of the environment to actions to be taken when in those states. More formally, a policy, denoted by $\pi$, is a function associating an action to a state.
 
-In the Deep Q-Network (DQN) algorithm, the policy is implicitly defined through a Q-function wich gives its name the algorithm. This Q-function evaluates the expected cumulative reward of taking action $a$ in state $s$ and following the optimal policy thereafter. Instead of directly mapping states to actions, DQN uses this Q-function to decide which action to take.
+In the Deep Q-Network (DQN) algorithm, the policy is implicitly defined through a Q-function wich gives its name the algorithm. This Q-function evaluates the expected cumulative discounted reward of taking action $a$ in state $s$ and following the optimal policy thereafter. Instead of directly mapping states to actions, DQN uses this Q-function to decide which action to take.
 
 $$
 Q(s_t) = \left(Q(s_t, a)\right)_{a \in \mathcal{A}} = \left(\mathbb{E}\left[\sum_{k=0}^{\infty} \gamma^k r_{k+t} \mid s_t, a_t = a\right]\right)_{a \in \mathcal{A}}
 $$
 
-Here $\gamma$ is the discount factor and $r_k$ is the reward returned by the environnement after choosing the action $a_k$.
+Here $\gamma \in [0, 1]$ is the discount factor and $r_k$ is the reward provided by the environnement after taking the action $a_k$.
+
+The discount factor determines the importance of future rewards. A higher $\gamma$ indicates that future rewards are valued more, while a lower $\gamma$ places more emphasis on immediate rewards.
 
 For a given state $s$, the Q-function returns a vector of values, where each component of the vector corresponds to a specific action $a$ from the set of possible actions $\mathcal{A}$. The action chosen by the policy is typically the one with the highest Q-value :
 
@@ -61,7 +63,7 @@ A replay buffer is a finite-sized memory that stores tuples of the form $(s_{t},
 
 These tuples, often referred to as "experiences" or "transitions", are stored in the buffer during the agent's interaction with the environment. When the buffer reaches its capacity $c$, the oldest experiences are discarded to make room for new ones.
 
-Note : in my implementation of the DQN algorithm I chose to remember $1 - d_t$ instead of $d_t$
+Note : in my implementation of the DQN algorithm, I chose to remember $1 - d_t$ instead of $d_t$
 
 ##### Why Use a Replay Buffer?
 
@@ -123,16 +125,16 @@ To find the formula of the target, we have to think about what we want the Q-fun
 
 $$Q(s, a) = \mathbb{E}\left[\sum_{k=0}^{\infty} \gamma^k r_{k+t} \mid s, a\right]$$
 
-$$Q(s, a) = \mathbb{E}\left[r_t + \gamma max_{a' \in \mathcal{A}}(Q(s', a')) \mid s, a\right]$$
+$$Q(s, a) = \mathbb{E}\left[r_t + \gamma (1 - d) max_{a' \in \mathcal{A}}(Q(s', a')) \mid s, a\right]$$
 
 Ainsi pour faire converger les paramètres de Q vers le paramétrage idéal, on prendra :
 
-$$T(s, a, r, d, s') = r + \gamma max_{a' \in \mathcal{A}}(Q(s', a'))$$
+$$T(s, a, r, d, s') = r + \gamma (1 - d) max_{a' \in \mathcal{A}}(Q(s', a'))$$
 
 In practice, a target network is often used to stabilize the training process. This target network is initialized with the same parameters as the Q-network but is updated less frequently. By holding the target network's parameters constant for several training steps before updating them, this technique reduces oscillations and divergence during training. As a result, it provides a significant improvement in the learning process, making it more stable and allowing the algorithm to converge more effectively. We end up with the following loss function :
 
 $$
-L(\mathcal{B}) = \dfrac{1}{n}\sum_{(s, a, r, d, s') \in \mathcal{B}} \left(Q(s, a)  - r - \gamma max_{a' \in \mathcal{A}}(Q_{target}(s', a'))\right)^2
+L(\mathcal{B}) = \dfrac{1}{n}\sum_{(s, a, r, d, s') \in \mathcal{B}} \left(Q(s, a)  - r - \gamma (1 - d) max_{a' \in \mathcal{A}}(Q_{target}(s', a'))\right)^2
 $$
 
 ##### Updating the Target-Network
