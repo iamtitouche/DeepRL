@@ -149,7 +149,7 @@ $\theta_{target} \leftarrow \theta$
 $\theta_{target} \leftarrow \tau \theta + (1 - \tau)\theta_{target}$ with $\tau \in \left]0, 1\right[$  
 
 
-![Parameter_Evolution](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/DQN/parameter_evolution.png)
+![Parameter_Evolution](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/parameter_evolution.png)
 
 This graph illustrates the evolution of a Q-Network weight compared to its corresponding weight in the Target-Network, using both hard updates (with $f=10$) and soft updates (with $f=2,\tau=0.1$).
 
