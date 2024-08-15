@@ -47,13 +47,13 @@ Here are the results of the training on the 4 by 4 map using the original reward
 
 | 4x4 - Slippery: False | 4x4 - Slippery: True |
 |:---------------------:|:-------------------:|
-| ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_1/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_2/rewards.png) |
+| ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_1/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_2/rewards.png) |
 
 Here are the results of the training on the 4x4 map using the modified rewards. To make the data from both types of training comparable, we plotted the original rewards that the agent would have received during the training with the modified rewards.
 
 | 4x4 - Slippery: False | 4x4 - Slippery: True |
 |:---------------------:|:-------------------:|
-| ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_5/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_6/rewards.png) |
+| ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_5/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_6/rewards.png) |
 
 We can see that for both the non-slippery and slippery environnements, the modified reward does not give a better training.
 
@@ -62,4 +62,4 @@ Here are the results of the training on the 8 by 8 map using the original reward
 
 | 8x8 - Slippery: False | 8x8 - Slippery: True |
 |:---------------------:|:-------------------:|
-| ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/FrozenLake/Training_Data_3/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_4/rewards.png) |
+| ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_3/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_4/rewards.png) |
