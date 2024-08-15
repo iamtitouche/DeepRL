@@ -184,7 +184,7 @@ The lower $\lambda$, the higher the entropy of the probability distribution of t
 
 ![Network Output](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/q_network_output.png)
 
-|------------------|--------------------------------------------------------|---------------------------------------------------------------------------------|
+|:------------------:|:------------------:|:-------------------------:|
 |![Proba 1](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_1.png)|![Proba 2](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_2.png)|![Proba 3](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_3.png)|
 
 Note : the softmax function cannot be used as an activation function at the end of the Q-Network because we still need the output of this network to approximate the value of the expected cumulated and discounted rewards
