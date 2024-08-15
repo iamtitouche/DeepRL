@@ -151,11 +151,12 @@ $\theta_{target} \leftarrow \theta$
 $\theta_{target} \leftarrow \tau \theta + (1 - \tau)\theta_{target}$ with $\tau \in \left]0, 1\right[$  
 
 
-![Parameter_Evolution](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/DQN/parameter_evolution.png)
+![Parameter_Evolution](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/parameter_evolution.png)
 
 This graph illustrates the evolution of a Q-Network weight compared to its corresponding weight in the Target-Network, using both hard updates (with $f=10$) and soft updates (with $f=2,\tau=0.1$).
 
 A third method exists and is implemented in my code. It is called t-soft update and it basically consist in a soft update where the parameter $\tau$ evolves through time.
+
 
 #### How to choose the action to take during training ?
 
