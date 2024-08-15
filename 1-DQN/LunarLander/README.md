@@ -2,7 +2,7 @@
 
 ### What is Lunar Lander ?
 
-![LunarLander](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/LunarLander/Training_Data_1/lunarlander.gif)
+![LunarLander](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/LunarLander/Training_Data_1/lunarlander.gif)
 
 LunarLander is a classic rocket trajectory optimization problem.
 
@@ -32,6 +32,6 @@ For each step, the reward:
 
 ### Results
 
-![Rewards](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/LunarLander/Training_Data_1/rewards.png)
+![Rewards](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/LunarLander/Training_Data_1/rewards.png)
 
-![LunarLander](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/LunarLander/Training_Data_1/lunarlander.gif)
+![LunarLander](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/LunarLander/Training_Data_1/lunarlander.gif)
