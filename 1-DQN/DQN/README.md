@@ -180,6 +180,10 @@ We can also, introduce a parameter $\lambda > 0$ called the inverse temperature 
 
 $$\forall a \in \mathcal{A}, P(a) = \dfrac{exp(\lambda Q(s, a))}{\sum_{a' \in \mathcal{A}} exp(\lambda Q(s, a'))}$$
 
-The higher $\lambda$, the higher the entropy of the probability distribution of the actions, meaning the closer this distribution gets to a uniform distribution.
+The lower $\lambda$, the higher the entropy of the probability distribution of the actions, meaning the closer this distribution gets to a uniform distribution.
+
+![Network Output](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/q_network_output.png)
+
+|![Proba 1](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_1.png)|![Proba 2](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_2.png)|![Proba 3](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_3.png)|
 
 Note : the softmax function cannot be used as an activation function at the end of the Q-Network because we still need the output of this network to approximate the value of the expected cumulated and discounted rewards
