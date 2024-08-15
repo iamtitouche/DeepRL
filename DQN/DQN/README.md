@@ -115,7 +115,7 @@ $$
 
 Note : Other loss functions such as Huber Loss or others can also be used, but the MSE is the most commonly used one and the choice of the loss function does not really impact the learning process
 
-After Calculating this loss we use the gradient descent algorithm to optimize the parameters of the Q-Network.
+After calculating this loss we use the gradient descent algorithm to optimize the parameters of the Q-Network.
 
 #### The Target 
 
@@ -129,10 +129,24 @@ Ainsi pour faire converger les paramètres de Q vers le paramétrage idéal, on 
 
 $$T(s, a, r, d, s') = r + \gamma max_{a' \in \mathcal{A}}(Q(s', a'))$$
 
-
 In practice, a target network is often used to stabilize the training process. This target network is initialized with the same parameters as the Q-network but is updated less frequently. By holding the target network's parameters constant for several training steps before updating them, this technique reduces oscillations and divergence during training. As a result, it provides a significant improvement in the learning process, making it more stable and allowing the algorithm to converge more effectively. We end up with the following loss function :
 
 $$
 L(\mathcal{B}) = \dfrac{1}{n}\sum_{(s, a, r, d, s') \in \mathcal{B}} \left(Q(s, a)  - r - \gamma max_{a' \in \mathcal{A}}(Q_{target}(s', a'))\right)^2
 $$
 
+##### Updating the Target-Network
+
+We define an update frequency $f$, which determines how often the target network is updated. Specifically, the target network's parameters are updated every $f$ actions taken by the agent. There are different methods for performing this update. One common approach is the hard update, where the target network's parameters are completely replaced by the Q-network's parameters. Another approach is the soft update, where the target network's parameters are gradually updated by blending a small portion of the Q-network's parameters into the existing target network parameters. Both methods aim to stabilize the learning process, with the hard update providing a clear distinction between updates, while the soft update offers smoother transitions.
+
+- Hard Update:
+$\theta_{target} \leftarrow \theta$
+
+
+- Soft Update:
+$\theta_{target} \leftarrow \tau \theta + (1 - \tau)\theta_{target}$ with $\tau \in \left]0, 1\right[$  
+
+
+![Parameter_Evolution](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/DQN/DQN/parameter_evolution.png)
+
+This graph illustrates the evolution of a Q-Network weight compared to its corresponding weight in the Target-Network, using both hard updates (with $f=10$) and soft updates (with $f=2,\tau=0.1$).
