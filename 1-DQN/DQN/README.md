@@ -168,7 +168,7 @@ At each step the agent will choose its next action, either completly randomly wi
 
 The value of epsilon is initialized at a high probability value (often $1$), and is slowly decreased after each game until it reaches a minimum value.
 
-This method allows, to choose mostly random actions in the first games, and slowly following more and more policy as it becomes more and more accurate.
+This method allows, to choose mostly random actions in the first games, and slowly following more and more the agentpolicy as it becomes more and more accurate.
 
 ##### The softmax exploration
 
