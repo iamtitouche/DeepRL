@@ -30,7 +30,9 @@ The policy refers to a strategy or a mapping from states of the environment to a
 In the Deep Q-Network (DQN) algorithm, the policy is implicitly defined through a Q-function wich gives its name the algorithm. This Q-function evaluates the expected cumulative discounted reward of taking action $a$ in state $s$ and following the optimal policy thereafter. Instead of directly mapping states to actions, DQN uses this Q-function to decide which action to take.
 
 $$
-Q(s_t) = \left(Q(s_t, a)\right)_{a \in \mathcal{A}} = \left(\mathbb{E}\left[\sum_{k=0}^{\infty} \gamma^k r_{k+t} \mid s_t, a_t = a\right]\right)_{a \in \mathcal{A}}
+Q(s_t) = \left(Q(s_t, a)\right)_{a \in \mathcal{A}} $$
+
+$$ Q(s, a) = \mathbb{E}\left[\sum_{k=0}^{\infty} \gamma^k r_{k+t} \mid s_t, a_t = a\right]
 $$
 
 Here $\gamma \in [0, 1]$ is the discount factor and $r_k$ is the reward provided by the environnement after taking the action $a_k$.
@@ -154,3 +156,29 @@ $\theta_{target} \leftarrow \tau \theta + (1 - \tau)\theta_{target}$ with $\tau 
 This graph illustrates the evolution of a Q-Network weight compared to its corresponding weight in the Target-Network, using both hard updates (with $f=10$) and soft updates (with $f=2,\tau=0.1$).
 
 A third method exists and is implemented in my code. It is called t-soft update and it basically consist in a soft update where the parameter $\tau$ evolves through time.
+
+#### How to choose the action to take during training ?
+
+The training process aims to find the optimal policy to solve an environment. So how can the agent explore its environment to gather diverse experiences which it can learn from ? The training process will be divided in two parts, the exploration during which the agent will not follow its policy because it is still far from optimal and then the exploitation during which the agent will follow its policy to some certain extend. To do so, there are two main methods :
+
+##### The $\epsilon$-greedy exploration
+
+At each step the agent will choose its next action, either completly randomly with a probability $\epsilon$ or by following its policy with a probability $1-\epsilon$.
+
+The value of epsilon is initialized at a high probability value (often $1$), and is slowly decreased after each game until it reaches a minimum value.
+
+This method allows, to choose mostly random actions in the first games, and slowly following more and more policy as it becomes more and more accurate.
+
+##### The softmax exploration
+
+With the softmax method, we take the output of the Q-Network and convert each component of the output vector to a probability being the probability of the corresponding action to be chosen. To convert these values to probabilities we use the softmax function : 
+
+$$\forall a \in \mathcal{A}, P(a) = \dfrac{exp(Q(s, a))}{\sum_{a' \in \mathcal{A}} exp(Q(s, a'))}$$
+
+We can also, introduce a parameter $\lambda > 0$ called the inverse temperature (because $1/\lambda$ is called the temperature), that will limit or encourage the exploration depending on its chosen value.
+
+$$\forall a \in \mathcal{A}, P(a) = \dfrac{exp(\lambda Q(s, a))}{\sum_{a' \in \mathcal{A}} exp(\lambda Q(s, a'))}$$
+
+The higher $\lambda$, the higher the entropy of the probability distribution of the actions, meaning the closer this distribution gets to a uniform distribution.
+
+Note : the softmax function cannot be used as an activation function at the end of the Q-Network because we still need the output of this network to approximate the value of the expected cumulated and discounted rewards
