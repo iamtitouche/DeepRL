@@ -204,6 +204,7 @@ Begin
     n_step = 0
     update_frequency, tau = 10, 0.1
     learning_rate = 0.001
+    batch_size = 64
 
     For episode 1 to max_episode
         state = environment.reset()
