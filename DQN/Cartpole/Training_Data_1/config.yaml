@@ -4,6 +4,7 @@ defaults:
 environment:
   name: "CartPole-v0"
   render_mode: "ansi"
+  reward_mode: "original"
 
 network:
   input_dim: 16 
@@ -16,7 +17,7 @@ hyperparameters:
   state_shape: [2, 4]
   learning_rate: 0.0001
   discount_factor: 0.99
-  max_episodes: 2500
+  max_episodes: 2000
   memory_capacity: 10000
   batch_size: 64
   update_frequency: 1
