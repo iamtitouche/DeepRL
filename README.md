@@ -15,6 +15,7 @@ Deep Reinforcement Learning is a rapidly growing field in machine learning, comb
 
 This project is divided into subdirectories, each corresponding to a different learning algorithm. Each of these subdirectories contains a folder named after the algorithm, which holds the Python implementation of the algorithm and a README that explains the theory behind how the algorithm works. Additionally, there are subdirectories specific to different environments, where you will find the training results, preprocessing functions specific to each training, potentially a wrapper to modify the environment's behavior, and a script to launch the training.
 
+```
 Algo_name/
 │
 ├── Algo/
@@ -28,4 +29,5 @@ Algo_name/
     ├── Training_Data_1/
     ├── Env2_Processing.py
     └── train.py
+```
 
