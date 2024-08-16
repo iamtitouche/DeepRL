@@ -4,7 +4,7 @@
 
 #### Environment and set of actions
 
-Consider an environment $\mathcal{E}$ with a discrete action space. At each moment, the agent must choose an action from the discrete space of $K$ possible actions $\mathcal{A} = \lbrace 1, \dots, K \rbrace$. After executing this action, the state of $\mathcal{E}$ is modified. It is noted that $\mathcal{E}$ is stochastic, and naturally, the algorithm will be capable of solving deterministic environments as they are simply a special case of stochastic environments.
+Consider an environment $\mathcal{E}$ with a discrete action space. At each moment, the agent must choose an action from the discrete space of $K$ possible actions $\mathcal{A} = \lbrace 1, \dots, K \rbrace$. After executing this action, the state of $\mathcal{E}$ is modified. It should be noted that $\mathcal{E}$ is stochastic, and naturally, the algorithm will be capable of solving deterministic environments as they are simply a special case of stochastic environments.
 
 #### Observations and states
 
@@ -21,7 +21,7 @@ At each state, the environment will return an observation noted $x_t$. Depending
 
 It can be noted that by only receiving the last observation as input, crucial information will be missing for our agent. For instance, in Super Mario Bros, if the agent is provided with only the current frame, it cannot deduce Mario's speed and direction. Similarly, in LunarLander, while the agent has access to speed as part of the observation, it lacks information about acceleration, which is crucial for counteracting gravity. To address this issue, we provide the agent with a sequence of observations rather than just a single observation. It should be noted that in environments like FrozenLake, where previous states of the game do not influence the future, it is unnecessary to provide a sequence as input.
 
-Thus, the sequence leading to the observation $x_t$ will be denoted as $s_t$ and called "state". We will then have $s_t = \left(\phi_{t-k}, \dots, \phi_{t-1}, \phi_t\right)$ where $\phi_t = \phi(x_t)$ with $\phi$ being the data preprocessing function. For example, in an environment like Super Mario Bros, it is common practice to reduce the input image resolution and convert it to grayscale as is it to allows improve the speed of the learning process by reducing the size of the entries.
+Thus, the sequence leading to the observation $x_t$ will be denoted as $s_t$ and called "state". We will then have $s_t = \left(\phi_{t-k}, \dots, \phi_{t-1}, \phi_t\right)$ where $\phi_t = \phi(x_t)$ with $\phi$ being the data preprocessing function. For example, in an environment like Super Mario Bros, it is common practice to reduce the input image resolution and convert it to grayscale, as this improves the speed of the learning process by reducing the size of the inputs.
 
 #### Policy
 
@@ -65,7 +65,7 @@ A replay buffer is a finite-sized memory that stores tuples of the form $(s_{t},
 
 These tuples, often referred to as "experiences" or "transitions", are stored in the buffer during the agent's interaction with the environment. When the buffer reaches its capacity $c$, the oldest experiences are discarded to make room for new ones.
 
-Note : in my implementation of the DQN algorithm, I chose to remember $1 - d_t$ instead of $d_t$
+Note : in my implementation of the DQN algorithm, I chose to store $1 - d_t$ instead of $d_t$
 
 ##### Why Use a Replay Buffer?
 
@@ -189,3 +189,54 @@ The lower $\lambda$, the higher the entropy of the probability distribution of t
 | ![Proba 1](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_1.png) | ![Proba 2](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_2.png) | ![Proba 3](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_3.png) |
 
 Note : the softmax function cannot be used as an activation function at the end of the Q-Network because we still need the output of this network to approximate the value of the expected cumulated and discounted rewards
+
+#### Complete detailled algorithm
+
+Finally the following pseudo-code describes the complete DQN algorithm (using here $\epsilon$-greedy exploration and soft update).
+
+```
+Begin
+    Initialize Q-Network and buffer
+    Initialize Target-Network by copying Q-Network parameters
+
+    epsilon, epsilon_decay, epsilon_min = 1, 0.99, 0.01
+    gamma = 0.99
+    n_step = 0
+    update_frequency, tau = 10, 0.1
+
+    For episode 1 to max_episode
+        state = environment.reset()
+        done = False
+
+        While not done
+            n_step += 1
+            
+            # epsilon-greedy exploration
+            If rand() < epsilon
+                action = random_action()
+            Else
+                action = argmax(q(state)) # Best action according to policy
+            End If
+
+            next_state, reward, done = environment.step(action)
+
+            buffer.store(state, action, reward, done, next_state)
+
+            If buffer.size >= batch_size
+                states, actions, rewards, dones, next_states = buffer.sample(batch_size)
+                replay_experience(batch)
+            End If
+
+            # Updating the Target-Network
+            If n_step % update_frequency == 0
+                soft_update(q.parameters, q_target.parameters, tau)
+            End If
+
+        End While
+
+        # Updating epsilon
+        epsilon = max(epsilon * epsilon_decay, epsilon_min)
+
+    End For
+End
+```

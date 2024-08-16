@@ -21,5 +21,5 @@ def state_preprocess(state, state_shape, previous_state = None, device=torch.dev
 
 
 def get_initial_state(env, state_shape, device):
-    return state_preprocess(env.reset()[0], state_shape, device)
+    return state_preprocess(env.reset()[0], state_shape, None, device)
 
