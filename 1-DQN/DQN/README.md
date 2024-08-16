@@ -229,7 +229,7 @@ Begin
                 
                 targets = rewards + gamma * (1 - dones) * max(q_target(next_states))
 
-                loss = MSE(q_states, target)
+                loss = MSE(q(states).gather(actions), target)
 
                 loss.backward() # Gradients Calculation
                 q.parameters.apply_gradient_descent(learning_rate)
