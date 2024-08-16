@@ -55,7 +55,7 @@ def main(cfg: DictConfig, config_path: str):
     }
 
     dqn = AgentDQN(hyperparameters)
-    dqn.train(cfg.hyperparameters.max_episodes)
+    dqn.train(int(cfg.hyperparameters.max_episodes/10))
 
 if __name__ == "__main__":
     args = parse_args()

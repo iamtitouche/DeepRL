@@ -37,6 +37,7 @@ class ReplayBuffer:
         result += f"    Rewards : {self.rewards}\n"
         result += f"    Done : {self.dones}\n"
         result += f"    Next States : {self.next_states}\n"
+        result += f"    Capacity : {self.capacity}"
         return result
 
     def store_transition(self, state: torch.tensor, action: int, reward: float, next_state: torch.tensor, done: bool):

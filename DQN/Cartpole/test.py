@@ -4,22 +4,39 @@ import torch
 import hydra
 from omegaconf import DictConfig
 import gymnasium as gym
-import gymnasium as gym
+from wrapper import CartPole
 from Cartpole_Processing import state_preprocess, get_initial_state
 import argparse
 from hydra import initialize, compose
+from PIL import Image
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'DQN')))
 from dqn import AgentDQN
 
-def test(agent):
+def test(agent, path, n_games, generate_gif=False):
     state = get_initial_state(agent.env, agent.state_shape, agent.device)
 
-    done = False
-    while not done:
-        next_state, reward, done = agent.step_testing(state)
-        state = state_preprocess(next_state, agent.state_shape, state, agent.device)
+    seq = [agent.env.render()]
+    i = 1
 
+    done = False
+    while not done or i < n_games:
+        if done:
+            state = get_initial_state(agent.env, agent.state_shape, agent.device)
+            seq.append(agent.env.render())
+            done = False
+            i += 1
+
+        next_state, reward, done = agent.step_testing(state)
+        seq.append(agent.env.render())
+        state = state_preprocess(next_state, agent.state_shape, state, agent.device)
+    
+    pil_images = [Image.fromarray(image) for image in seq]
+    pil_images[0].save(f'{path}/cartpole.gif',
+                   save_all=True,
+                   append_images=pil_images[1:],
+                   duration=20,  # Durée en ms entre les frames
+                   loop=0)
 def parse_args():
     parser = argparse.ArgumentParser(description="DQN Configuration with Hydra")
     parser.add_argument('--config_path', type=str, default="Training_Data_1", help="Path to the configuration directory")
@@ -27,7 +44,7 @@ def parse_args():
 
 def main(cfg: DictConfig, config_path: str):
      # Utilisez config_path pour accéder au chemin
-    env = gym.make("CartPole-v0", render_mode="human")
+    env = CartPole(render_mode="rgb_array", reward_mode=cfg.environment.reward_mode)
 
 
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), config_path)))
@@ -62,8 +79,8 @@ def main(cfg: DictConfig, config_path: str):
     }
 
     dqn = AgentDQN(hyperparameters)
-    dqn.load_model("Training_Data_1/checkpoints/cp_1500.pth")
-    test(dqn)
+    dqn.load_model("Training_Data_1/checkpoints/cp_1000.pth")
+    test(dqn, config_path, 1)
 
 if __name__ == "__main__":
     args = parse_args()

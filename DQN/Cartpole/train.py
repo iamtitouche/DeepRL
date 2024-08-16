@@ -4,7 +4,7 @@ import torch
 import hydra
 from omegaconf import DictConfig
 import gymnasium as gym
-import gymnasium as gym
+from wrapper import CartPole
 from Cartpole_Processing import state_preprocess, get_initial_state
 import argparse
 from hydra import initialize, compose
@@ -19,7 +19,7 @@ def parse_args():
 
 def main(cfg: DictConfig, config_path: str):
      # Utilisez config_path pour accéder au chemin
-    env = gym.make("CartPole-v0", render_mode=cfg.environment.render_mode)
+    env = CartPole(render_mode=cfg.environment.render_mode, reward_mode=cfg.environment.reward_mode)
 
 
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), config_path)))
