@@ -203,6 +203,7 @@ Begin
     gamma = 0.99
     n_step = 0
     update_frequency, tau = 10, 0.1
+    learning_rate = 0.001
 
     For episode 1 to max_episode
         state = environment.reset()
@@ -224,7 +225,13 @@ Begin
 
             If buffer.size >= batch_size
                 states, actions, rewards, dones, next_states = buffer.sample(batch_size)
-                replay_experience(batch)
+                
+                targets = rewards + gamma * (1 - dones) * max(q_target(next_states))
+
+                loss = MSE(q_states, target)
+
+                loss.backward() # Gradients Calculation
+                q.parameters.apply_gradient_descent(learning_rate)
             End If
 
             # Updating the Target-Network
