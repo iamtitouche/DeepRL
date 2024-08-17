@@ -17,19 +17,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.
 
 from optimizer import create_optimizer
 
-DEBUG = False
-
-
-def debug_log(entry: str):
-    """
-    Print an entry only if the constant DEBUG is set to True
-
-    Args:
-        entry (str): printable entry
-    """
-    if DEBUG:
-        print(entry)
-
 
 class AgentDQN:
     """Class DQN for Deep Q-Learning Algorithm"""
@@ -185,15 +172,7 @@ class AgentDQN:
         Returns:
             float: reward obtained during the full episode
         """
-        debug_log("Start of Episode : ")
         state = self.get_initial_state(self.env, self.state_shape, self.device)
-        debug_log(f"Initial state : {state}")
-        # Assertions for DEBUG
-        #assert self.state_shape == state.shape
-        #for i in range(1, self.state_shape[0]):
-        #    assert torch.equal(state[i], state[0])
-
-        debug_log(f"Shape should be : {self.state_shape} and is {state.shape}")
 
         total_reward = 0
         i = 1
@@ -222,8 +201,6 @@ class AgentDQN:
                 else:
                     moving_average_loss = np.mean(self.losses)
 
-                #self.writer.add_scalar('Moving_Average_Loss', moving_average_loss, self.timestep)
-
                 if i % self.network_sync_rate == 0:
                     if self.update_mode == "hard_update":
                         self.hard_update()
@@ -242,7 +219,6 @@ class AgentDQN:
 
     def hard_update(self):
         """Full Synchronisation of the target network"""
-        #debug_log("Hard update")
         self.network_target.load_state_dict(self.network_policy.state_dict())
         for mod1, mod2 in zip(self.network_policy, self.network_target):
             assert (type(mod1) == type(mod2))
@@ -263,7 +239,6 @@ class AgentDQN:
 
     def t_soft_update(self):
         """Partial Synchronisation of the target network with the t-soft update algorithm"""
-        debug_log("t-soft update")
         policy_params = torch.cat([param.view(-1) for param in self.network_policy.parameters()])
         target_params = torch.cat([param.view(-1) for param in self.network_target.parameters()])
 
@@ -289,14 +264,11 @@ class AgentDQN:
         Returns:
             int: action taken
         """
-        debug_log(f"Choosing action : {self.exploration_mode}")
         if self.exploration_mode == "epsilon-greedy":
 
             if np.random.rand() < self.epsilon:
-                debug_log("Choosing Randomly...")
                 return np.random.randint(0, self.number_actions)
 
-            debug_log("Choosing By Policy...")
             with torch.no_grad():
                 q_values = policy(state.unsqueeze(0))
             return torch.argmax(q_values[0]).item()
@@ -358,7 +330,6 @@ class AgentDQN:
     def epsilon_update(self):
         """Update the value of epsilon if it is still above the set minimum."""
         self.epsilon = max(self.epsilon * self.epsilon_decay, self.epsilon_min)
-        debug_log(f"Updating Espilon : {self.epsilon}")
 
     def compute_target(self, rewards, dones, next_states):
         next_q_values = self.network_target(next_states).max(dim=1, keepdim=True)[0]
@@ -371,23 +342,10 @@ class AgentDQN:
         debug_log("Starting Experience Replay...")
         states, actions, rewards, dones, next_states = self.replay_buffer.sample(self.batch_size, self.device)
 
-        debug_log(f"States : {states}")
-        assert tuple(states.shape) == (self.batch_size,) + self.state_shape
-        assert not states.requires_grad
-        debug_log(f"Actions : {actions}")
-        assert tuple(actions.shape) == (self.batch_size, 1)
-        assert not actions.requires_grad
-        debug_log(f"Q-Values from states : {self.network_policy(states)}")
         q_values = self.network_policy(states).gather(1, actions)
-        assert tuple(q_values.shape) == (self.batch_size, 1)
-        assert q_values.requires_grad
-        debug_log(f"Q-Values for taken actions : {q_values}")
 
         with torch.no_grad():
             expected_q_value = self.compute_target(rewards, dones, next_states)
-
-        assert expected_q_value.shape == (self.batch_size, 1)
-        assert not expected_q_value.requires_grad
 
         loss = F.mse_loss(q_values, expected_q_value)
         self.running_loss += loss.item()
@@ -440,8 +398,6 @@ class AgentDQN:
             checkpoint_step (int): model saving frequency
             visualize (bool, optional): Sets up the training visualisation. Defaults to True.
         """
-        debug_log(self)
-        debug_log("Start of training...")
         episode = 1
         rewards = []
         epsilons = []
@@ -482,8 +438,6 @@ class AgentDQN:
         """
         self.load_model(model)
 
-        debug_log(self)
-        debug_log("Start of training...")
         episode = 1
         rewards = []
         epsilons = []
