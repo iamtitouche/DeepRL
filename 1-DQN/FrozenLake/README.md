@@ -65,16 +65,28 @@ Here are the results of the training on the 8 by 8 map using the original reward
 | ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_3/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_4/rewards.png) |
 
 
-### Analysis of the slippery env
+#### Analysis of the Slippery 4x4 map
 
-The FrozenLake environment being very simple we can think of the ideal policy even in the mode slippery.
+The FrozenLake environment being very simple we can find the ideal policy by analysing the map, and so even in the mode slippery.
 
-To begin with, the following shows in yellow, the choices of actions that cannot lead to death and in read the safest choices of actions when no choice is completely safe.
+To begin with, the following map shows in yellow the choices of actions that cannot lead to death and in red the safest choices of actions when no choice is completely safe.
 
-![safest_choices](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/safest_choices.png)
+| Mapping of the safe actions |
+|:---------------------:|
+|![safest_choices](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/safest_choices.png)|
 
 We can see for almost every tile a safe choice exist, for example on the tile bellow the staring point we can purposely choose to go into the left border and by doing so we are sure to avoid death and we have a little chance to come closer to the objective tile. We can notice that only one tile can lead to death, so our new objective is to limit our choices to actions that will not lead to death neither this dangerous tile if some other choice is available.
 
-![safest_choices](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/best_policy_by_hand.png)
+| Mapping of best policy |
+|:----------------------:|
+|![safest_choices](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/best_policy_by_hand.png)|
 
-We can notice that for the tile directly above the dangerous one, chosing to go up give us the guarantee to avoid death. But for the tile directly bellow, going left is safe the only choice so even if it can lead us to the dangerous tile it is still better than every other choice that could lead to a direct death. So now we can also make changes to avoid this tile, that is why when on the tile just before the ending we chose to go down. We also can change, the starting action, we notice that if we go up we are condemned to stay on the upper row and never finishing the game, so we have to choose between one of the three other choice, and we choose to go left because it is the only one thaht prevent us to go farther into the upper row and so farther from the ending.
+We can notice that for the tile directly above the dangerous one, chosing to go up give us the guarantee to avoid death.
+But for the tile directly bellow, going left is the only safe choice so even if it can lead us to the dangerous tile it 
+is still better than every other choice that could lead to a direct death. So now we should also make changes to avoid this
+tile, that is why when on the tile just before the ending we chose to go down. We also can change, the starting action, 
+we notice that if we go up we are condemned to stay on the upper row and never end the game, so we have to choose 
+between one of the three other choice. We choose to go left because, event if all three choices are safe, it is the only one that prevent us to go farther
+into the upper row and so farther from the ending.
+
+#### Actions Map of a Trained Model
