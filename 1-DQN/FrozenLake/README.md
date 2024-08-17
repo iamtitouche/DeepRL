@@ -69,11 +69,12 @@ Here are the results of the training on the 8 by 8 map using the original reward
 
 The FrozenLake environment being very simple we can think of the ideal policy even in the mode slippery.
 
-To begin with, the following shows in blue, the choices of actions that cannot lead to death and in read the safest choices of actions when no choice is completely safe.
+To begin with, the following shows in yellow, the choices of actions that cannot lead to death and in read the safest choices of actions when no choice is completely safe.
 
 ![safest_choices](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/safest_choices.png)
 
-We can see that only one tile can lead to death, so our new objective is to limit our choices to actions that will not lead to death neither this dangerous tile if some other choice is available.
+We can see for almost every tile a safe choice exist, for example on the tile bellow the staring point we can purposely choose to go into the left border and by doing so we are sure to avoid death and we have a little chance to come closer to the objective tile. We can notice that only one tile can lead to death, so our new objective is to limit our choices to actions that will not lead to death neither this dangerous tile if some other choice is available.
 
 ![safest_choices](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/best_policy_by_hand.png)
 
+We can notice that for the tile directly above the dangerous one, chosing to go up give us the guarantee to avoid death. But for the tile directly bellow, going left is safe the only choice so even if it can lead us to the dangerous tile it is better than every other choice that can lead to a direct death.
