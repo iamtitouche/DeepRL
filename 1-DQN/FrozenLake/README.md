@@ -63,3 +63,17 @@ Here are the results of the training on the 8 by 8 map using the original reward
 | 8x8 - Slippery: False | 8x8 - Slippery: True |
 |:---------------------:|:-------------------:|
 | ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_3/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_4/rewards.png) |
+
+
+### Analysis of the slippery env
+
+The FrozenLake environment being very simple we can think of the ideal policy even in the mode slippery.
+
+To begin with, the following shows in blue, the choices of actions that cannot lead to death and in read the safest choices of actions when no choice is completely safe.
+
+![safest_choices](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/safest_choices.png)
+
+We can see that only one tile can lead to death, so our new objective is to limit our choices to actions that will not lead to death neither this dangerous tile if some other choice is available.
+
+![safest_choices](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/best_policy_by_hand.png)
+
