@@ -71,9 +71,10 @@ The FrozenLake environment being very simple we can find the ideal policy by ana
 
 To begin with, the following map shows in yellow the choices of actions that cannot lead to death and in red the safest choices of actions when no choice is completely safe.
 
-| Mapping of the safe actions |
-|:---------------------:|
-|![safest_choices](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/safest_choices.png)|
+<div style="text-align: center;">
+    <img src="https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/safest_choices.png" alt="safest_choices" width="400"/>
+    <p><em>Mapping of the safe actions</em></p>
+</div>
 
 We can see for almost every tile a safe choice exist, for example on the tile bellow the staring point we can purposely choose to go into the left border and by doing so we are sure to avoid death and we have a little chance to come closer to the objective tile. We can notice that only one tile can lead to death, so our new objective is to limit our choices to actions that will not lead to death neither this dangerous tile if some other choice is available.
 
