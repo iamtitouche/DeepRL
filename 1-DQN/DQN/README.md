@@ -60,7 +60,7 @@ A replay buffer is a finite-sized memory that stores tuples of the form $(s_{t},
 - $s_t​$ is the state observed at time step $t$
 - $a_t$ is the action taken by the agent at time step $t$
 - $r_t$​ is the reward received after taking action $a_t​$
-- $d_t$ is a boolean value indicating if the gmae is over (True) or not (False) 
+- $d_t$ is a boolean value indicating if the game is over (True) or not (False) 
 - $s_{t+1}$​ is the resulting state after taking action $a_t$​
 
 These tuples, often referred to as "experiences" or "transitions", are stored in the buffer during the agent's interaction with the environment. When the buffer reaches its capacity $c$, the oldest experiences are discarded to make room for new ones.
@@ -248,3 +248,26 @@ Begin
     End For
 End
 ```
+
+## My implementation
+
+#### The replay buffer
+
+Instead of using a simple FIFO (First-In, First-Out) data structure, I took advantage of the fact that we know the maximum capacity of the buffer from the outset. This approach allows us to optimize memory usage and speed up the sampling process, crucial for training neural networks efficiently.
+
+Buffer Structure
+The replay buffer consists of a set of five pre-allocated PyTorch tensors:
+
+- **states tensor**: Stores the state representations observed by the agent.
+- **actions tensor**: Stores the actions taken by the agent in each state.
+- **rewards tensor**: Stores the rewards received after each action.
+- **not_dones tensor**: Stores boolean flags indicating whether the episode ended after the action.
+- **next_states tensor**: Stores the resulting states after each action.
+
+
+Note : as explained in a previous part, I chose to store the opposite of the boolean done for each experience
+
+Index Tracking : I maintain an oldest_index variable to keep track of where the next experience should be stored.
+
+- Initial Phase: When the buffer is not yet full (i.e., the number of stored experiences is less than the buffer's maximum capacity), each new experience is stored at the end of the buffer. The oldest_index is always $0$.
+- Circular Buffer Implementation: Once the buffer reaches its maximum capacity, the new experience is stored at the index oldest_index. When oldest_index reaches the buffer's maximum size, it resets to $0$, buffer into a circular buffer. This way, new experiences always overwrite the oldest ones, ensuring the buffer always contains the most recent experiences and in terms of one can be found in the buffer this implementation is equivalent to a simple FIFO.

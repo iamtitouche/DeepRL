@@ -26,7 +26,7 @@ After each action, the agent receive the following reward :
 
 The game can be played in two different modes, depending on the value of the boolean is_slippery.
 
-If is_slippery is True will move in intended direction with probability of $1/3$ else will move in either perpendicular direction with equal probability of $1/3$ in both directions.
+If is_slippery is True, the agent will move in intended direction with probability of $1/3$ else will move in either perpendicular direction with equal probability of $1/3$ in both directions.
 
 #### Improvements
 
