@@ -6,12 +6,12 @@ import os
 
 import torch
 import torch.nn.functional as F
+from torch.distrbutions import Categorical
 import numpy as np
 import matplotlib.pyplot as plt
 import copy
 import gymnasium as gm
 from replay_buffer import ReplayBuffer
-from tensorboardX import SummaryWriter
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'utils')))
 
@@ -27,14 +27,15 @@ class AgentDQN:
         Args:
             hyperparams_dict (dict): dictionnay of the hyperparameters
         """
+        print("Initializing the agent...")
         torch.autograd.set_detect_anomaly(True)
         self.env = hyperparams_dict["environment"]
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         if self.device.__str__() == "cuda":
-            print(f"Device used : {torch.cuda.get_device_name(0)}")
+            print(f"Working on : {torch.cuda.get_device_name(0)}")
         else:
-            print("Device used : cpu")
+            print("Working on : cpu")
 
         self.number_actions = hyperparams_dict["action_space_size"]
         self.state_shape = hyperparams_dict["state_shape"]
@@ -93,46 +94,13 @@ class AgentDQN:
         self.state_preprocess = hyperparams_dict["state_preprocess"]
         self.get_initial_state = hyperparams_dict["get_initial_state"]
 
-        self.losses = []
-
         self.timestep = 1
-
-        #self.create_summary(hyperparams_dict)
 
         self.working_directory = hyperparams_dict["working_directory"]
 
         if not os.path.exists(f"{self.working_directory}/checkpoints"):
             os.makedirs(f"{self.working_directory}/checkpoints")
             print("Checkpoints directory created")
-
-
-    def create_summary(self, hyperparams_dict):
-        """Create a summary of the learning process with TensorBoardX
-
-        Args:
-            hyperparams_dict (dict): dictionnay of the hyperparameters
-        """
-        self.writer = SummaryWriter()
-        update_mode_mapping = {
-            "hard_update": 0,
-            "soft_update": 1,
-            "t-soft_update": 2
-        }
-        hp = {
-            'epsilon': hyperparams_dict['epsilon'],
-            'epsilon_min': hyperparams_dict["epsilon_min"],
-            'epsilon_decay': hyperparams_dict["epsilon_decay"],
-            'update_mode': update_mode_mapping[self.update_mode],
-            'batch_size': hyperparams_dict["batch_size"],
-            'buffer_size': hyperparams_dict["memory_capacity"]
-        }
-
-        self.writer.add_hparams(
-            hparam_dict=hp,
-            metric_dict={}
-        )
-
-
 
     def __str__(self):
         """Converstion to string method
@@ -193,13 +161,7 @@ class AgentDQN:
             i += 1
 
             if len(self.replay_buffer) >= self.batch_size:
-                loss = self.replay_experience()
-                self.losses.append(loss.item())
-
-                if len(self.losses) >= 200:
-                    moving_average_loss = np.mean(self.losses[-200:])
-                else:
-                    moving_average_loss = np.mean(self.losses)
+                self.replay_experience()
 
                 if i % self.network_sync_rate == 0:
                     if self.update_mode == "hard_update":
@@ -230,7 +192,6 @@ class AgentDQN:
 
     def soft_update(self):
         """Partial Synchronisation of the target network by weighted average"""
-        debug_log("Soft update")
         for param_target, param_policy in zip(
             self.network_target.parameters(),
             self.network_policy.parameters()):
@@ -339,7 +300,6 @@ class AgentDQN:
 
     def replay_experience(self):
         """Replay and learn from the experience stored in the replay buffer."""
-        debug_log("Starting Experience Replay...")
         states, actions, rewards, dones, next_states = self.replay_buffer.sample(self.batch_size, self.device)
 
         q_values = self.network_policy(states).gather(1, actions)
@@ -362,12 +322,20 @@ class AgentDQN:
         return loss
 
     def save_model(self, file_path: str):
-        """Sauvegarde les poids et biais du modèle dans un fichier."""
+        """Save the parameters of the policy into a pth file.
+
+        Args:
+            file_path (str): path to the pth file to save the model into
+        """
         torch.save(self.network_policy.state_dict(), file_path)
         print(f"Model saved to {file_path}")
 
     def load_model(self, file_path: str):
-        """Charge les poids et biais du modèle depuis un fichier."""
+        """Load the parameters of a saved model into the policy and target networks.
+
+        Args:
+            file_path (str): path to the pth file containing the saved model
+        """
         self.network_policy.load_state_dict(torch.load(file_path, map_location=torch.device("cpu")))
         try:
             self.network_target.load_state_dict(torch.load(file_path))
@@ -375,19 +343,6 @@ class AgentDQN:
             pass
         print(f"Model loaded from {file_path}")
 
-    def test(self):
-        """Test the current policy network by playing the environment
-        """
-        state = self.get_initial_state(self.env)
-
-        done = False
-        count_step = 0
-        while not done and count_step < 100:
-            next_state, reward, done = self.step_testing(state)
-
-            next_state = self.preprocess_func(next_state)
-            state = next_state
-            count_step += 1
 
     def train(self, checkpoint_step: int, visualize: bool = True):
         """Train the network
@@ -400,24 +355,13 @@ class AgentDQN:
         """
         episode = 1
         rewards = []
-        epsilons = []
+        rewards_file = f"{self.working_directory}/rewards.txt"
+        checkpoint_directory = f"{self.working_directory}/checkpoints"
 
         while episode <= self.max_episodes:
-            #epsilons.append(self.epsilon)
-
             reward = self.epoch()
-            print(episode, " reward : ", reward)
+            print("Episode ", episode, " - Reward : ", reward)
             rewards.append(reward)
-
-            if episode >= 20:
-                moving_average_reward = np.mean(rewards[-20:])
-            else:
-                moving_average_reward = np.mean(rewards)
-
-            #self.writer.add_scalar('Moving_Average_Reward', moving_average_reward, episode)
-
-            rewards_file = f"{self.working_directory}/rewards.txt"
-            checkpoint_directory = f"{self.working_directory}/checkpoints"
 
             with open(rewards_file, mode="a", encoding="utf-8") as file:
                 file.write(f"Epoch {episode} : Reward : {reward:.8f} / Loss : {self.running_loss:.8f} ;\n")
@@ -425,7 +369,6 @@ class AgentDQN:
                     self.save_model(f"{checkpoint_directory}/cp_{episode}.pth")
             episode += 1
 
-            self.running_loss = 0
 
     def train_from_saved(self, model, nb_episode, rewards_file: str, checkpoint_directory: str, checkpoint_step: int, visualize: bool = True):
         """Train the network
