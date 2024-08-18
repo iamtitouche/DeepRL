@@ -31,3 +31,19 @@ Algo_name/
     └── train.py
 ```
 
+## Algorithms
+
+- [1 - DQN](https://github.com/iamtitouche/DeepRL/tree/main/1-DQN)
+- [2 - DDQN](https://github.com/iamtitouche/DeepRL/tree/main/2-DDQN)
+- [3 - Dueling DQN](https://github.com/iamtitouche/DeepRL/tree/main/3-DuelingDQN)
+- [4 - Dueling DDQN](https://github.com/iamtitouche/DeepRL/tree/main/4-DuelingDQN)
+- 5 - DDPG
+- 6 - TD3
+- 7 - PPO
+- 8 - SAC
+- 9 - A2C
+- 10 - A3C
+- 11 - ACER
+- 12 - GAIL
+- 13 - ACER
+
