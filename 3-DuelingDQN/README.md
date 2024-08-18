@@ -17,6 +17,6 @@ The vector $A(s)$ is called vector of advantages and $V(s)$ is called the value 
 
 In this new architecture, $Q(s,a)$ is defined as follows :
 
-$Q(s, a) = V(s) + A(s, a) - max_{a' \in \mathcal{A}}\left(A(s, a')\right)$
+$$Q(s, a) = V(s) + A(s, a) - max_{a' \in \mathcal{A}}\left(A(s, a')\right)$$
 
 *Note : instead of using the max function we can use the average of the components of $A(s)$.*
