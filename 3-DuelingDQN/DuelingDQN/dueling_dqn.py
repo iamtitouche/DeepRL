@@ -4,35 +4,12 @@ import time
 import sys
 import os
 
-import torch
-import torch.nn.functional as F
-import numpy as np
-import matplotlib.pyplot as plt
-import copy
-import gymnasium as gm
-from tensorboardX import SummaryWriter
-
 from network import DuelingNetwork
 
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'DQN', 'DQN')))
 from dqn import AgentDQN
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'utils')))
 
-from optimizer import create_optimizer
-
-DEBUG = False
-
-
-def debug_log(entry: str):
-    """
-    Print an entry only if the constant DEBUG is set to True
-
-    Args:
-        entry (str): printable entry
-    """
-    if DEBUG:
-        print(entry)
 
 
 class AgentDuelingDQN(AgentDQN):
