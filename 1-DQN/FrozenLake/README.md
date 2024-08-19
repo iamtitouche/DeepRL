@@ -41,31 +41,25 @@ If set to "penalty_for_death", the agent will receive the following reward :
 - $0$ : in every other situation
 
 
-### Results
+### DQN Training Results for the non-slippery Mode
 
-Here are the results of the training on the 4 by 4 map using the original rewards.
+Here are the results of the training on the 4x4 non-slippery map using both the original and modified reward structures. To ensure the data from both training scenarios are comparable, we plotted the original rewards that the agent would have received during the training with the modified rewards.
 
-| 4x4 - Slippery: False | 4x4 - Slippery: True |
+| Original Rewards | Modified Rewards |
 |:---------------------:|:-------------------:|
-| ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_1/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_2/rewards.png) |
+| ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_1/rewards.png) | ![4x4-false-modified](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_5/rewards.png) |
 
-Here are the results of the training on the 4x4 map using the modified rewards. To make the data from both types of training comparable, we plotted the original rewards that the agent would have received during the training with the modified rewards.
+From these results, we observe that for this specific configuration, the modified reward structure does not lead to improved training outcomes compared to the original rewards.
 
-| 4x4 - Slippery: False | 4x4 - Slippery: True |
+Next, we examine the data obtained from training on the 8x8 non-slippery map.
+
+| Original Rewards | Modified Rewards |
 |:---------------------:|:-------------------:|
-| ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_5/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_6/rewards.png) |
+| ![8x8-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_3/rewards.png) | ![8x8-false-modified](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_7/rewards.png) |
 
-We can see that for both the non-slippery and slippery environnements, the modified reward does not give a better training.
+In this case, it appears that the modified rewards enable the agent to learn more quickly, suggesting an improvement in training efficiency with the modified reward structure.
 
-
-Here are the results of the training on the 8 by 8 map using the original rewards.
-
-| 8x8 - Slippery: False | 8x8 - Slippery: True |
-|:---------------------:|:-------------------:|
-| ![4x4-false-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_3/rewards.png) | ![4x4-true-original](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/FrozenLake/Training_Data_4/rewards.png) |
-
-
-#### Analysis of the Slippery 4x4 map
+### Analysis of the Slippery 4x4 map
 
 The FrozenLake environment being very simple we can find the ideal policy by analysing the map, and so even in the mode slippery.
 
