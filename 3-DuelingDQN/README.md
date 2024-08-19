@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-Before reading this explanation of the Dueling DQN algorithm, you should have read the description of the DQN algorithm available [here](https://github.com/iamtitouche/DeepRL/tree/main/DQN/DQN) or at least, have a good understanding of the functionning of this learning algorithm.
+Before reading this explanation of the Dueling DQN algorithm, you should have read the description of the DQN algorithm available [here](https://github.com/iamtitouche/DeepRL/tree/main/1-DQN/DQN) or at least, have a good understanding of the functionning of this learning algorithm.
 
 ## The Dueling DQN improvement
 
