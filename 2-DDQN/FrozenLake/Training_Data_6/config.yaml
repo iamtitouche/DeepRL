@@ -20,7 +20,7 @@ hyperparameters:
   learning_rate: 0.0003
   clip_grad_norm: 3
   discount_factor: 0.99
-  max_episodes: 2000
+  max_episodes: 5000
   memory_capacity: 10000
   batch_size: 64
   update_frequency: 1
