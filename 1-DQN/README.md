@@ -23,6 +23,8 @@ It can be noted that by only receiving the last observation as input, crucial in
 
 Thus, the sequence leading to the observation $x_t$ will be denoted as $s_t$ and called "state". We will then have $s_t = \left(\phi_{t-k}, \dots, \phi_{t-1}, \phi_t\right)$ where $\phi_t = \phi(x_t)$ with $\phi$ being the data preprocessing function. For example, in an environment like Super Mario Bros, it is common practice to reduce the input image resolution and convert it to grayscale, as this improves the speed of the learning process by reducing the size of the inputs.
 
+*Note : we can also include the previously taken action in the state, then we would have $s_t = \left(\phi_{t-k}, a_{t-k}, \dots, \phi_{t-1}, a_{t-1} \phi_t\right)$*
+
 #### Policy
 
 The policy refers to a strategy or a mapping from states of the environment to actions to be taken when in those states. More formally, a policy, denoted by $\pi$, is a function associating an action to a state.
@@ -65,7 +67,7 @@ A replay buffer is a finite-sized memory that stores tuples of the form $(s_{t},
 
 These tuples, often referred to as "experiences" or "transitions", are stored in the buffer during the agent's interaction with the environment. When the buffer reaches its capacity $c$, the oldest experiences are discarded to make room for new ones.
 
-Note : in my implementation of the DQN algorithm, I chose to store $1 - d_t$ instead of $d_t$
+*Note : in my implementation of the DQN algorithm, I chose to store $1 - d_t$ instead of $d_t$*
 
 ##### Why Use a Replay Buffer?
 
@@ -188,7 +190,7 @@ The lower $\lambda$, the higher the entropy of the probability distribution of t
 |:------------------:|:------------------:|:-------------------------:|
 | ![Proba 1](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_1.png) | ![Proba 2](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_2.png) | ![Proba 3](https://raw.githubusercontent.com/iamtitouche/DeepRL/main/1-DQN/DQN/proba_3.png) |
 
-Note : the softmax function cannot be used as an activation function at the end of the Q-Network because we still need the output of this network to approximate the value of the expected cumulated and discounted rewards
+*Note : the softmax function cannot be used as an activation function at the end of the Q-Network because we still need the output of this network to approximate the value of the expected cumulated and discounted rewards*
 
 #### Complete detailled algorithm
 
@@ -265,7 +267,7 @@ The replay buffer consists of a set of five pre-allocated PyTorch tensors:
 - **next_states tensor**: Stores the resulting states after each action.
 
 
-Note : as explained in a previous part, I chose to store the opposite of the boolean done for each experience
+*Note : as explained in a previous part, I chose to store the opposite of the boolean done for each experience*
 
 Index Tracking : I maintain an oldest_index variable to keep track of where the next experience should be stored.
 
