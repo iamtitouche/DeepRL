@@ -33,19 +33,19 @@ Algo_name/
 
 ## Algorithms
 
-- [1 - DQN](https://github.com/iamtitouche/DeepRL/tree/main/1-DQN)
-- [2 - DDQN](https://github.com/iamtitouche/DeepRL/tree/main/2-DDQN)
-- [3 - Dueling DQN](https://github.com/iamtitouche/DeepRL/tree/main/3-DuelingDQN)
-- [4 - Dueling DDQN](https://github.com/iamtitouche/DeepRL/tree/main/4-DuelingDQN)
-- 5 - DDPG
-- 6 - TD3
-- 7 - PPO
-- 8 - SAC
-- 9 - A2C
-- 10 - A3C
-- 11 - ACER
-- 12 - GAIL
-- 13 - ACER
+- [1 - DQN](https://github.com/iamtitouche/DeepRL/tree/main/1-DQN) ![Status](https://img.shields.io/badge/Status-Implemented-brightgreen)
+- [2 - DDQN](https://github.com/iamtitouche/DeepRL/tree/main/2-DDQN) ![Status](https://img.shields.io/badge/Status-Implemented-brightgreen)
+- [3 - Dueling DQN](https://github.com/iamtitouche/DeepRL/tree/main/3-DuelingDQN) ![Status](https://img.shields.io/badge/Status-Implemented-brightgreen)
+- [4 - Dueling DDQN](https://github.com/iamtitouche/DeepRL/tree/main/4-DuelingDQN) ![Status](https://img.shields.io/badge/Status-Implemented-brightgreen)
+- 5 - DDPG ![Status](https://img.shields.io/badge/Status-TODO-red)
+- 6 - TD3 ![Status](https://img.shields.io/badge/Status-TODO-red)
+- 7 - PPO ![Status](https://img.shields.io/badge/Status-TODO-red)
+- 8 - SAC ![Status](https://img.shields.io/badge/Status-TODO-red)
+- 9 - A2C ![Status](https://img.shields.io/badge/Status-TODO-red)
+- 10 - A3C ![Status](https://img.shields.io/badge/Status-TODO-red)
+- 11 - ACER ![Status](https://img.shields.io/badge/Status-TODO-red)
+- 12 - GAIL ![Status](https://img.shields.io/badge/Status-TODO-red)
+- 13 - ACER ![Status](https://img.shields.io/badge/Status-TODO-red)
 
 ## Training Status
 
@@ -57,11 +57,7 @@ Ce tableau résume l'état de l'entraînement pour chaque combinaison d'algorith
 | **DDQN**              | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
 | **Dueling DQN**       | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
 | **Dueling DDQN**      | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
-| **DDPG**              | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
-| **TD3**               | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
 | **PPO**               | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
-| **SAC**               | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
 | **A2C**               | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
 | **A3C**               | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
 | **ACER**              | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
-| **GAIL**              | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
