@@ -39,8 +39,8 @@ Algo_name/
 └── Env2/
     ├── Training_Data_1/
     ├── Env2_Processing.py
-│   ├── train.py
-│   └── README.md
+    ├── train.py
+    └── README.md
 ```
 
 ## Algorithms
