@@ -49,12 +49,12 @@ Algo_name/
 
 ## Training Status
 
-Ce tableau résume l'état de l'entraînement pour chaque combinaison d'algorithme et d'environnement.
+The following table keeps track of the environments I successfully trained a model on, using a given learning algorithm. 
 
 | Algorithm/Environment | FrozenLake | CartPole | LunarLander |
 |-----------------------|------|------|------|
 | **DQN**               | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
-| **DDQN**              | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![No](https://img.shields.io/badge/Trained-No-red) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
+| **DDQN**              | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
 | **Dueling DQN**       | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![No](https://img.shields.io/badge/Trained-No-red) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
 | **Dueling DDQN**      | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![No](https://img.shields.io/badge/Trained-No-red) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
 | **PPO**               | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
