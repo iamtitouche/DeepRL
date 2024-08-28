@@ -18,17 +18,29 @@ This project is divided into subdirectories, each corresponding to a different l
 ```
 Algo_name/
 │
-├── Algo/
+├── README.md # Explains the maths behind the algorithm and my implementation of it
+│
+├── Algo/ # Contains the source code of the algorithm
 │
 ├── Env1/
-│   ├── Training_Data_1/
+│   ├── Training_Data_1/ # Contains the data from a training session
+│   |   ├── checkpoints/ # Contains saved models from the training session
+│   |   |   └── cp_100.pth
+│   |   |
+│   │   ├── config.yaml # Hyperparameters of the training session and environment configuration
+│   │   ├── network.py # Contains the network architecture of the model
+│   │   ├── rewards.txt
+│   │   └── rewards.png
+│   │
 │   ├── Env1_Processing.py
-│   └── train.py
+│   ├── train.py
+│   └── README.md # Explains the environment and gives an analysis of the training results
 │
 └── Env2/
     ├── Training_Data_1/
     ├── Env2_Processing.py
-    └── train.py
+│   ├── train.py
+│   └── README.md
 ```
 
 ## Algorithms
