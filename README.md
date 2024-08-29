@@ -86,3 +86,6 @@ The following table keeps track of the environments I successfully trained a mod
 - Distributional DQN
 - TRPO
 - HER
+- AWAC
+- AWETT
+- ACKTR
