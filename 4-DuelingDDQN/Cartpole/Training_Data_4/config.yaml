@@ -1,0 +1,33 @@
+defaults:
+  - _self_
+
+environment:
+  name: "CartPole-v0"
+  render_mode: "ansi"
+  reward_mode: "original"
+
+network:
+  input_dim: 16 
+  hidden_dim: 32
+  output_dim: 2
+
+hyperparameters:
+  optimizer_type: "adam"
+  mode_training: true
+  state_shape: [2, 4]
+  learning_rate: 0.00005
+  discount_factor: 0.99
+  max_episodes: 4000
+  memory_capacity: 10000
+  batch_size: 64
+  update_frequency: 1
+  update_mode: "t-soft_update"
+  exploration_mode: "epsilon-greedy"
+  tau: 0.001
+  nu: 1
+  tau_softmax: 5
+  epsilon: 1
+  epsilon_min: 0.01
+  epsilon_decay: 0.995
+  grad_clipping_method: null
+  grad_clipping_threshold: 0
