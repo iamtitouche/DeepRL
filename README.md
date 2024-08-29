@@ -67,8 +67,8 @@ The following table keeps track of the environments I successfully trained a mod
 |-----------------------|------|------|------|
 | **DQN**               | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
 | **DDQN**              | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
-| **Dueling DQN**       | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![No](https://img.shields.io/badge/Trained-No-red) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
-| **Dueling DDQN**      | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![No](https://img.shields.io/badge/Trained-No-red) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
+| **Dueling DQN**       | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
+| **Dueling DDQN**      | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
 | **PPO**               | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
 | **A2C**               | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
 | **A3C**               | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
