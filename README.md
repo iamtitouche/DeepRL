@@ -73,3 +73,14 @@ The following table keeps track of the environments I successfully trained a mod
 | **A2C**               | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
 | **A3C**               | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
 | **ACER**              | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
+
+
+## Things I want to learn about 
+
+- Noisy DQN
+- Rainbow algorithm
+- BPTT
+- Prioritised experience replay
+- SHAC
+- AHAC
+- Distributional DQN
