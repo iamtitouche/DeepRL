@@ -1,0 +1,33 @@
+defaults:
+  - _self_
+
+environment:
+  name: "LunarLander-v3"
+  render_mode: "ansi"
+
+network:
+  input_dim: 16  # Adapté à FrozenLake 4x4
+  hidden_dim: 32
+  output_dim: 3
+
+hyperparameters:
+  optimizer_type: "adam"
+  mode_training: true
+  state_shape: [1, 2]
+  learning_rate: 0.0001
+  clip_grad_norm: 3
+  discount_factor: 0.99
+  max_episodes: 2000
+  memory_capacity: 10000
+  batch_size: 64
+  update_frequency: 1
+  update_mode: "soft_update"
+  exploration_mode: "epsilon-greedy"
+  tau: 0.001
+  nu: 1
+  tau_softmax: 5
+  epsilon: 1
+  epsilon_min: 0.01
+  epsilon_decay: 0.995
+  grad_clipping_method: null
+  grad_clipping_threshold: 0
