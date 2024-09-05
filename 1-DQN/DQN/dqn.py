@@ -3,6 +3,7 @@ import time
 
 import sys
 import os
+from logging import setLogRecordFactory
 
 import torch
 import torch.nn.functional as F
@@ -16,6 +17,7 @@ from replay_buffer import ReplayBuffer
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'utils')))
 
 from optimizer import create_optimizer
+from initialization import apply_initialization
 
 
 class AgentDQN:
@@ -43,6 +45,11 @@ class AgentDQN:
         self.network_policy = hyperparams_dict["network"].to(self.device)
 
         if hyperparams_dict['mode_training']:
+            try:
+                self.initialization_mode = hyperparams_dict['initialization_mode']
+            except KeyError:
+                self.initialization_mode = "he_uniform"
+            apply_initialization(self.network_policy, self.initialization_mode)
             self.network_target = copy.deepcopy(self.network_policy).to(self.device)
             self.exploration_mode = hyperparams_dict["exploration_mode"]
             if self.exploration_mode == 'softmax':
