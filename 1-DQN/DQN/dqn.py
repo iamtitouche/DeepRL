@@ -7,7 +7,7 @@ from logging import setLogRecordFactory
 
 import torch
 import torch.nn.functional as F
-from torch.distrbutions import Categorical
+from torch.distributions import Categorical
 import numpy as np
 import matplotlib.pyplot as plt
 import copy
@@ -247,13 +247,8 @@ class AgentDQN:
                 q_values = policy(state.unsqueeze(0))
 
             p = torch.softmax(q_values * self.tau_softmax, dim=1)
-            rand = np.random.rand()
-            sum = p[0, 0].item()
-            for i in range(1, p.shape[1]):
-                if rand <= sum:
-                    return i - 1
-                sum += p[0, i].item()
-            return p.shape[1] - 1
+            dist = Categorical(p)
+            return dist.sample().item()
 
         raise ValueError(f"Exploration_mode {self.exploration_mode} is not valid")
 
