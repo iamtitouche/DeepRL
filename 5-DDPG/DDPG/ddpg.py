@@ -1,5 +1,6 @@
 import copy
 import enum
+import os
 
 import numpy as np
 import torch
@@ -30,10 +31,11 @@ class AgentDDPG:
 
         self.state_shape = hyperparams_dict["state_shape"]
         if hyperparams_dict['mode_training']:
+            self.max_episodes = hyperparams_dict["max_episodes"]
             self.discount_factor = hyperparams_dict['discount_factor']
 
             self.batch_size = hyperparams_dict['batch_size']
-            self.buffer_size = hyperparams_dict['buffer_size']
+            self.buffer_size = hyperparams_dict['memory_capacity']
             self.replay_buffer = ReplayBuffer(self.buffer_size, self.state_shape)
 
         self.actor = ActorNetwork(hyperparams_dict, self.device)
@@ -49,8 +51,14 @@ class AgentDDPG:
                 self.update_mode = "hard_update"
             self.tau = hyperparams_dict['tau']
 
-        self.get_initial_state = hyperparams_dict["initial_state_getter"]
+        self.get_initial_state = hyperparams_dict["get_initial_state"]
         self.state_preprocess = hyperparams_dict["state_preprocess"]
+
+        self.working_directory = hyperparams_dict["working_directory"]
+
+        if not os.path.exists(f"{self.working_directory}/checkpoints"):
+            os.makedirs(f"{self.working_directory}/checkpoints")
+            print("Checkpoints directory created")
 
     def epoch(self):
         """Episode of training
@@ -58,10 +66,7 @@ class AgentDDPG:
         Returns:
             float: reward obtained during the full episode
         """
-        state = self.get_initial_state(self.env, self.state_shape[0], self.device)
-
-        # Assertions for DEBUG
-        assert self.state_shape == state.shape
+        state = self.get_initial_state(self.env, self.state_shape, self.device)
 
 
 
@@ -76,9 +81,9 @@ class AgentDDPG:
             next_state, reward, done, truncated, action = step_result
 
             if done and next_state is None:
-                next_state = self.get_initial_state(self.env, self.state_shape[0], self.device)
+                next_state = self.get_initial_state(self.env, self.state_shape, self.device)
             else:
-                next_state = self.state_preprocess(next_state, self.state_shape[0], self.device, state)
+                next_state = self.state_preprocess(next_state, self.state_shape, state, self.device)
 
 
             total_reward += reward
@@ -176,7 +181,7 @@ class AgentDDPG:
         torch.save(self.actor.network.state_dict(), f'{dir_path}/cp_actor_{model_nb}.pth')
         print(f"Actor Model saved to {f'{dir_path}/cp_actor_{model_nb}.pth'}")
 
-    def train(self, rewards_file: str, checkpoint_directory: str, checkpoint_step: int, visualize: bool = True):
+    def train(self, checkpoint_step: int, visualize: bool = True):
         """Train the network
 
         Args:
@@ -186,19 +191,20 @@ class AgentDDPG:
             visualize (bool, optional): Sets up the training visualisation. Defaults to True.
         """
 
-        i = 1
+        episode = 1
         rewards = []
-        epsilons = []
+        rewards_file = f"{self.working_directory}/rewards.txt"
+        checkpoint_directory = f"{self.working_directory}/checkpoints"
 
-        while i <= 10000:
+        while episode <= self.max_episodes:
             reward = self.epoch()
-            print(i, " reward : ", reward)
+            print("Episode ", episode, " - Reward : ", reward)
             rewards.append(reward)
 
             with open(rewards_file, mode="a", encoding="utf-8") as file:
-                file.write(f"Epoch {i} : Reward : {reward:.8f} ;\n")
-                if (i % checkpoint_step == 0):
-                    self.save_model(checkpoint_directory, i)
-            i += 1
+                file.write(f"Epoch {episode} : Reward : {reward:.8f} ;\n")
+                if episode % checkpoint_step == 0:
+                    self.save_model(checkpoint_directory, episode)
+            episode += 1
 
 

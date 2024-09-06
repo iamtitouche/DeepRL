@@ -367,7 +367,7 @@ class AgentDQN:
 
             with open(rewards_file, mode="a", encoding="utf-8") as file:
                 file.write(f"Epoch {episode} : Reward : {reward:.8f} / Loss : {self.running_loss:.8f} ;\n")
-                if (episode % checkpoint_step == 0):
+                if episode % checkpoint_step == 0:
                     self.save_model(f"{checkpoint_directory}/cp_{episode}.pth")
             episode += 1
 

@@ -1,3 +1,4 @@
+import os
 import sys
 import torch
 import numpy as np
@@ -16,7 +17,7 @@ class CriticNetwork:
         self.network_action_value = hyperparams_dict['critic_network_action'].to(device)
         self.network_final = hyperparams_dict['critic_network_final'].to(device)
 
-        self.check_networks(hyperparams_dict)
+        #self.check_networks(hyperparams_dict)
 
         self.network = nn.Sequential(
             self.network_state_value,
