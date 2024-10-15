@@ -1,6 +1,7 @@
 import copy
 import enum
 import os
+import sys
 
 import numpy as np
 import torch
@@ -12,6 +13,10 @@ import time
 from replay_buffer import ReplayBuffer
 from actor_network import ActorNetwork
 from critic_network import CriticNetwork
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'utils')))
+
+from optimizer import clip_gradients
 
 
 class AgentDDPG:
@@ -51,6 +56,9 @@ class AgentDDPG:
                 self.update_mode = "hard_update"
             self.tau = hyperparams_dict['tau']
 
+        self.action_lower_bound = hyperparams_dict['action_lower_bound'].to(self.device)
+        self.action_upper_bound = hyperparams_dict['action_upper_bound'].to(self.device)
+
         self.get_initial_state = hyperparams_dict["get_initial_state"]
         self.state_preprocess = hyperparams_dict["state_preprocess"]
 
@@ -60,6 +68,11 @@ class AgentDDPG:
             os.makedirs(f"{self.working_directory}/checkpoints")
             print("Checkpoints directory created")
 
+        self.critic_grad_clipping_method = hyperparams_dict['critic_grad_clipping_method']
+        self.critic_grad_clipping_threshold = hyperparams_dict['critic_grad_clipping_threshold']
+        self.actor_grad_clipping_method = hyperparams_dict['actor_grad_clipping_method']
+        self.actor_grad_clipping_threshold = hyperparams_dict['actor_grad_clipping_threshold']
+
     def epoch(self):
         """Episode of training
 
@@ -67,7 +80,6 @@ class AgentDDPG:
             float: reward obtained during the full episode
         """
         state = self.get_initial_state(self.env, self.state_shape, self.device)
-
 
 
         total_reward = 0
@@ -124,8 +136,10 @@ class AgentDDPG:
             action = self.actor(state.unsqueeze(0))
 
             action += torch.from_numpy(np.sqrt(0.2) * np.random.normal(size=np.zeros(1).shape)).to(self.device)
-            action = torch.max(torch.min(action, torch.tensor([[1]]).to(self.device)),
-                               torch.tensor([[-1]]).to(self.device))
+
+            action = self.action_lower_bound + (self.action_upper_bound - self.action_lower_bound) * (action + 1) / 2
+            action = torch.max(torch.min(action, self.action_upper_bound),
+                               self.action_lower_bound)
         return action
 
     def step_training(self, state):
@@ -139,7 +153,7 @@ class AgentDDPG:
 
         result = self.env.step(np.array(action.cpu()))
 
-        return result[0], result[1], result[2]
+        return result[0], result[1], result[2], result[3]
 
     def replay_experience(self, update_actor) -> None:
         states, actions, rewards, not_dones, next_states = self.replay_buffer.sample(self.batch_size, self.device)
@@ -156,6 +170,7 @@ class AgentDDPG:
 
         self.critic.optimizer.zero_grad()
         critic_loss.backward()
+        clip_gradients(self.critic, self.critic_grad_clipping_method, self.critic_grad_clipping_threshold)
         self.critic.optimizer.step()
 
         if update_actor:
@@ -165,13 +180,17 @@ class AgentDDPG:
 
             self.actor.optimizer.zero_grad()
             actor_loss.backward()
+            clip_gradients(self.critic, self.actor_grad_clipping_method, self.actor_grad_clipping_threshold)
             self.actor.optimizer.step()
 
     def load_model(self, dir_path: str, model_nb):
         """Sauvegarde les poids et biais du modèle dans un fichier."""
         self.critic.network.load_state_dict(torch.load(f'{dir_path}/cp_critic_{model_nb}.pth'))
         self.actor.network.load_state_dict(torch.load(f'{dir_path}/cp_actor_{model_nb}.pth'))
-        print("Actor Model loaded to")
+        print("Actor Model loaded")
+
+        self.actor_target = copy.deepcopy(self.actor)
+        self.critic_target = copy.deepcopy(self.critic)
 
     def save_model(self, dir_path: str, model_nb):
         """Sauvegarde les poids et biais du modèle dans un fichier."""

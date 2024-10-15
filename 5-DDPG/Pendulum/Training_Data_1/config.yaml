@@ -1,0 +1,35 @@
+defaults:
+  - _self_
+
+environment:
+  name: "Pendulum-v1"
+  render_mode: "rgb_array"
+  reward_mode: "original"
+
+network:
+  input_dim: 16 
+  hidden_dim: 32
+  output_dim: 2
+
+hyperparameters:
+  optimizer_type: "adam"
+  mode_training: true
+  state_shape: [1, 3]
+  n_actions: 1
+  learning_rate_critic: 0.0001
+  learning_rate_actor: 0.0001
+  discount_factor: 0.99
+  max_episodes: 500
+  memory_capacity: 10000
+  batch_size: 64
+  update_frequency: 1
+  update_mode: "soft_update"
+  tau: 0.001
+  nu: 1
+  critic_grad_clipping_method: null
+  critic_grad_clipping_threshold: 0
+  actor_grad_clipping_method: null
+  actor_grad_clipping_threshold: 0
+  action_lower_bound: [-1]
+  action_upper_bound: [1]
+  checkpoint_step: 100

@@ -27,7 +27,7 @@ class CriticNetwork:
 
         self.device = device
         if hyperparams_dict['mode_training']:
-            self.optimizer = create_optimizer(self.network, hyperparams_dict['learning_rate_critic'], 'adam')
+            self.optimizer = create_optimizer(self.network, hyperparams_dict['learning_rate_critic'], hyperparams_dict['optimizer_type'])
 
 
     def __call__(self, states: torch.Tensor, actions) -> torch.Tensor:

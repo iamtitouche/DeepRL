@@ -15,7 +15,7 @@ class ActorNetwork:
         self.network = hyperparams_dict['actor_network'].to(device)
         self.device = device
         if hyperparams_dict['mode_training']:
-            self.optimizer = create_optimizer(self.network, hyperparams_dict['learning_rate_actor'], 'adam')
+            self.optimizer = create_optimizer(self.network, hyperparams_dict['learning_rate_actor'], hyperparams_dict['optimizer_type'])
 
     def __call__(self, input: torch.Tensor) -> torch.Tensor:
         return self.network(input)
