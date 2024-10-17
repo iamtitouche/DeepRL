@@ -28,7 +28,7 @@ def main(cfg: DictConfig, config_path: str):
         'mode_training': cfg.hyperparameters.mode_training,
         'environment': env,
         'n_actions': 1,
-        'action_space_size': cfg.network.output_dim,
+        'action_space_size': cfg.hyperparameters.n_actions,
         'get_initial_state': get_initial_state,
         'state_preprocess': state_preprocess,
         'state_shape': tuple(cfg.hyperparameters.state_shape),

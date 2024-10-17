@@ -1,0 +1,30 @@
+defaults:
+  - _self_
+
+environment:
+  name: "MountainCarContinuous-v0"
+  render_mode: "rgb_array"
+  reward_mode: "original"
+
+hyperparameters:
+  optimizer_type: "rms_prop"
+  mode_training: true
+  state_shape: [1, 2]
+  n_actions: 1
+  learning_rate_critic: 0.0001
+  learning_rate_actor: 0.00003
+  discount_factor: 0.99
+  max_episodes: 500
+  memory_capacity: 10000
+  batch_size: 64
+  update_frequency: 1
+  update_mode: "soft_update"
+  tau: 0.01
+  nu: 1
+  critic_grad_clipping_method: null
+  critic_grad_clipping_threshold: 0
+  actor_grad_clipping_method: "norm"
+  actor_grad_clipping_threshold: 1
+  action_lower_bound: [-1]
+  action_upper_bound: [1]
+  checkpoint_step: 100

@@ -76,7 +76,6 @@ The replay buffer serves multiple purposes that are essential for the success of
 - Breaking Correlations:
 When an agent learns from consecutive experiences, the data points are highly correlated. Learning directly from such correlated data can lead to poor generalization and slow learning. The replay buffer addresses this by allowing the agent to learn from a batch of random past experiences, thereby breaking the correlations and improving the robustness of the learning process.
 
-
 - Efficient Use of Data:
 The replay buffer allows the agent to reuse experiences multiple times, which leads to more efficient use of the data and faster convergence especially  when gathering new experiences is costly.
 

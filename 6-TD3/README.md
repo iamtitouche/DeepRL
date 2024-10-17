@@ -1,6 +1,4 @@
-## The Twin Delayed Deep Deterministic Policy Gradient
-
-# The Deep Deterministic Policy Gradient Algorithm
+# The Twin Delayed Deep Deterministic Policy Gradient
 
 ## Prerequisites
 

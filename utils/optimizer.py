@@ -16,5 +16,11 @@ def create_optimizer(network: nn.Module, learning_rate: float, opt_type: str='ad
     if opt_type == 'adam':
         return optim.Adam(network.parameters(), lr=learning_rate)
     if opt_type == 'rms_prop':
-        return optim.RMSProp(network.parameters(), lr=learning_rate)
+        return optim.RMSprop(network.parameters(), lr=learning_rate)
     raise ValueError("Optimizer type is not valid")
+
+def clip_gradients(network, method, threshold):
+    if method == "norm":
+            nn.utils.clip_grad_norm_(network.parameters(), threshold)
+    elif method == "component":
+        nn.utils.clip_grad_value_(network.parameters(), threshold)
