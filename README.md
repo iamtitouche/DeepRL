@@ -63,18 +63,18 @@ Algo_name/
 
 The following table keeps track of the environments I successfully trained a model on, using a given learning algorithm. 
 
-| Algorithm/Environment | FrozenLake                                                            | CartPole | LunarLander |
-|-----------------------|-----------------------------------------------------------------------|------|------|
-| **DQN**               | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen)          | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
-| **DDQN**              | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen)          | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
-| **Dueling DQN**       | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen)          | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
-| **Dueling DDQN**      | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen)          | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
-| **DDPG**              | ![Not Adapted](https://img.shields.io/badge/Trained-Not-Adapted-gray) | ![Not Adapted](https://img.shields.io/badge/Trained-NotAdapted-gray) | ![Not Adapted](https://img.shields.io/badge/Trained-NotAdapted-gray) |
-| **TD3**               | ![Not Adapted](https://img.shields.io/badge/Trained-NotAdapted-gray)  | ![Not Adapted](https://img.shields.io/badge/Trained-NotAdapted-gray) | ![Not Adapted](https://img.shields.io/badge/Trained-NotAdapted-gray) |
-| **PPO**               | ![No](https://img.shields.io/badge/Trained-No-red)                    | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
-| **A2C**               | ![No](https://img.shields.io/badge/Trained-No-red)                    | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
-| **A3C**               | ![No](https://img.shields.io/badge/Trained-No-red)                    | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
-| **ACER**              | ![No](https://img.shields.io/badge/Trained-No-red)                    | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
+| Algorithm/Environment | FrozenLake                                                          | CartPole | LunarLander |
+|-----------------------|---------------------------------------------------------------------|------|------|
+| **DQN**               | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen)        | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
+| **DDQN**              | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen)        | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
+| **Dueling DQN**       | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen)        | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
+| **Dueling DDQN**      | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen)        | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) | ![Yes](https://img.shields.io/badge/Trained-Yes-brightgreen) |
+| **DDPG**              | ![Not Adapted](https://img.shields.io/badge/Algo-NotAdapted-gray)   | ![Not Adapted](https://img.shields.io/badge/Trained-NotAdapted-gray) | ![Not Adapted](https://img.shields.io/badge/Trained-NotAdapted-gray) |
+| **TD3**               | ![Not Adapted](https://img.shields.io/badge/Trained-NotAdapted-gray) | ![Not Adapted](https://img.shields.io/badge/Trained-NotAdapted-gray) | ![Not Adapted](https://img.shields.io/badge/Trained-NotAdapted-gray) |
+| **PPO**               | ![No](https://img.shields.io/badge/Trained-No-red)                  | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
+| **A2C**               | ![No](https://img.shields.io/badge/Trained-No-red)                  | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
+| **A3C**               | ![No](https://img.shields.io/badge/Trained-No-red)                  | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
+| **ACER**              | ![No](https://img.shields.io/badge/Trained-No-red)                  | ![No](https://img.shields.io/badge/Trained-No-red) | ![No](https://img.shields.io/badge/Trained-No-red) |
 
 
 ## Things I want to learn about 
