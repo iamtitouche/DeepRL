@@ -25,6 +25,8 @@ class CriticNetwork:
             self.network_final
         ).to(device)
 
+        self.opt_type = hyperparams_dict['optimizer']
+
         self.device = device
         if hyperparams_dict['mode_training']:
             self.optimizer = create_optimizer(self.network, hyperparams_dict['learning_rate_critic'], hyperparams_dict['optimizer_type'])

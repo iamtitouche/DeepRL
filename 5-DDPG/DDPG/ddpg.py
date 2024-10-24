@@ -73,6 +73,39 @@ class AgentDDPG:
         self.actor_grad_clipping_method = hyperparams_dict['actor_grad_clipping_method']
         self.actor_grad_clipping_threshold = hyperparams_dict['actor_grad_clipping_threshold']
 
+    def __str__(self):
+        """Converstion to string method
+
+        Returns:
+            str: description of the Agent
+        """
+        result = "DDPG Agent :\n"
+        result += "  Data parameters :\n"
+        result += f"    State Shape                         : {self.state_shape}\n"
+        result += f"    Size of actions                     : {self.n_actions}\n"
+        result += f"    Min Values for actions              : {self.action_lower_bound}\n"
+        result += f"    Max Values for actions              : {self.action_upper_bound}\n\n"
+        result += "  Learning process hyperparameters :\n"
+        result += "    Actor Network parameters:\n"
+        result += f"      Learning rate                       : {self.actor.optimizer.defaults['lr']}\n"
+        result += f"      Optimizer Type                      : {self.actor.opt_type}\n"
+        result += "    Critic Network parameters:\n"
+        result += f"      Learning rate                       : {self.critic.optimizer.defaults['lr']}\n"
+        result += f"      Optimizer Type                      : {self.critic.opt_type}\n"
+        result += f"    Discount factor (\u03B3)            : {self.discount_factor}\n"
+        result += f"    Soft update parameter (\u03C4)      : {getattr(self, 'tau', None)}\n"
+        result += f"    T-Soft update parameter (\u03BD)    : {getattr(self, 'nu', None)}\n"
+        result += f"    Gradient clipping method            : {self.grad_clipping_method}\n"
+        result += f"    Gradient clipping threshold         : {getattr(self, 'grad_clipping_threshold', None)}\n"
+        result += f"    Batch size                          : {self.batch_size}\n"
+        result += f"    Network synchronistation rate       : {self.network_sync_rate}\n"
+        result += f"    Network Update mode                 : {self.update_mode}\n"
+        result += f"    Buffer capacity                     : {self.replay_buffer.capacity}\n"
+        result += f"    Maximum number of episodes          : {self.max_episodes}\n\n"
+        result += "  Network Details :\n"
+        result += f"    Network architecure                 : {self.network_policy}\n\n"
+        return result
+
     def epoch(self):
         """Episode of training
 

@@ -190,8 +190,6 @@ class AgentDQN:
         """Full Synchronisation of the target network"""
         self.network_target.load_state_dict(self.network_policy.state_dict())
         for mod1, mod2 in zip(self.network_policy, self.network_target):
-            assert (type(mod1) == type(mod2))
-
             for param1, param2 in zip(mod1.parameters(), mod2.parameters()):
                 assert param1.shape == param2.shape
                 assert torch.equal(param1, param2)
@@ -223,7 +221,7 @@ class AgentDQN:
         self.W_i = (1 - self.tau) * (self.W_i + self.w_i)
 
 
-    def choose_action_training(self, state: torch.tensor, policy: torch.nn.Sequential) -> int:
+    def choose_action_training(self, state: torch.tensor):
         """Choose the action according to the exploration methode of the agent
 
         Args:
@@ -238,13 +236,13 @@ class AgentDQN:
                 return np.random.randint(0, self.number_actions)
 
             with torch.no_grad():
-                q_values = policy(state.unsqueeze(0))
+                q_values = self.network_policy(state.unsqueeze(0))
             return torch.argmax(q_values[0]).item()
 
 
         elif self.exploration_mode == "softmax":
             with torch.no_grad():
-                q_values = policy(state.unsqueeze(0))
+                q_values = self.network_policy(state.unsqueeze(0))
 
             p = torch.softmax(q_values * self.tau_softmax, dim=1)
             dist = Categorical(p)
@@ -253,7 +251,7 @@ class AgentDQN:
         raise ValueError(f"Exploration_mode {self.exploration_mode} is not valid")
 
 
-    def step_training(self, state: torch.tensor, policy: torch.nn.Sequential = None) -> tuple:
+    def step_training(self, state: torch.tensor):
         """Advance the game using the exploration method for choosing the action.
 
         Args:
@@ -264,16 +262,14 @@ class AgentDQN:
             tuple: tuple containing the next state of the game, the reward, and a
             boolean describing if the game is finished
         """
-        if policy is None:
-            policy = self.network_policy
 
-        action = self.choose_action_training(state, policy)
+        action = self.choose_action_training(state)
         action_result = self.env.step(action)
 
         return action_result[0], action_result[1], action_result[2], action_result[3], action
 
 
-    def step_testing(self, state: torch.tensor) -> tuple:
+    def step_testing(self, state: torch.tensor):
         """Advance the game by following the agent policy.
 
         Args:
